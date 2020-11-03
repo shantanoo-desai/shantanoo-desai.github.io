@@ -1,0 +1,21 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>User-Management - Tag - Shan&#39;s Corner</title>
+        <link>https://shantanoo-desai.github.io/tags/user-management/</link>
+        <description>User-Management - Tag - Shan&#39;s Corner</description>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Mon, 24 Aug 2020 16:48:37 &#43;0200</lastBuildDate><atom:link href="https://shantanoo-desai.github.io/tags/user-management/" rel="self" type="application/rss+xml" /><item>
+    <title>Questitto: Light-weight, Blazing Fast Stack for your IoT Application</title>
+    <link>https://shantanoo-desai.github.io/posts/technology/questitto_light_stack_for_iot/</link>
+    <pubDate>Mon, 24 Aug 2020 16:48:37 &#43;0200</pubDate>
+    <author>Author</author>
+    <guid>https://shantanoo-desai.github.io/posts/technology/questitto_light_stack_for_iot/</guid>
+    <description><![CDATA[Create a simple IoT Stack with Mosquitto MQTT Broker, Telegraf and QuestDB]]></description>
+</item><item>
+    <title>Nugget: User Management in MQTT Mosquitto Broker with Docker</title>
+    <link>https://shantanoo-desai.github.io/posts/technology/nugget_mqtt_iot/</link>
+    <pubDate>Wed, 19 Aug 2020 20:20:03 &#43;0200</pubDate>
+    <author>Author</author>
+    <guid>https://shantanoo-desai.github.io/posts/technology/nugget_mqtt_iot/</guid>
+    <description><![CDATA[How to manage Users for your Mosquitto MQTT broker docker container without restarting the container]]></description>
+</item></channel>
+</rss>

@@ -1,0 +1,16 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>ESP32 - Tag - Shan&#39;s Corner</title>
+        <link>https://shantanoo-desai.github.io/tags/esp32/</link>
+        <description>ESP32 - Tag - Shan&#39;s Corner</description>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Tue, 24 Mar 2020 18:00:00 &#43;0200</lastBuildDate><atom:link href="https://shantanoo-desai.github.io/tags/esp32/" rel="self" type="application/rss+xml" /><item>
+    <title>Creating your IoT Node and Edge prototype with InfluxDB, Telegraf and Docker</title>
+    <link>https://shantanoo-desai.github.io/posts/technology/iot_edge_docker/</link>
+    <pubDate>Tue, 24 Mar 2020 18:00:00 &#43;0200</pubDate>
+    <author>Author</author>
+    <guid>https://shantanoo-desai.github.io/posts/technology/iot_edge_docker/</guid>
+    <description><![CDATA[<div class="featured-image">
+                <img src="/images/technology/iot_influxdb_docker/chronograf_dashboard_view.png" referrerpolicy="no-referrer">
+            </div>step-by-step straight up guide to building an IoT data acquisition application with off-the-shelf hardware and InfluxData’s InfluxDB 1.7 and Telegraf]]></description>
+</item></channel>
+</rss>

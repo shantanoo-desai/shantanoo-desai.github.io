@@ -1,0 +1,77 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>Tags - Tag - Shan&#39;s Corner</title>
+        <link>https://shantanoo-desai.github.io/tags/</link>
+        <description>Tags - Tag - Shan&#39;s Corner</description>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Thu, 10 Sep 2020 22:25:58 &#43;0200</lastBuildDate><atom:link href="https://shantanoo-desai.github.io/tags/" rel="self" type="application/rss+xml" /><item>
+    <title>Docker</title>
+    <link>https://shantanoo-desai.github.io/tags/docker/</link>
+    <pubDate>Thu, 10 Sep 2020 22:25:58 &#43;0200</pubDate>
+    <author>Author</author>
+    <guid>https://shantanoo-desai.github.io/tags/docker/</guid>
+    <description><![CDATA[]]></description>
+</item><item>
+    <title>docker-compose</title>
+    <link>https://shantanoo-desai.github.io/tags/docker-compose/</link>
+    <pubDate>Thu, 10 Sep 2020 22:25:58 &#43;0200</pubDate>
+    <author>Author</author>
+    <guid>https://shantanoo-desai.github.io/tags/docker-compose/</guid>
+    <description><![CDATA[]]></description>
+</item><item>
+    <title>IoT</title>
+    <link>https://shantanoo-desai.github.io/tags/iot/</link>
+    <pubDate>Thu, 10 Sep 2020 22:25:58 &#43;0200</pubDate>
+    <author>Author</author>
+    <guid>https://shantanoo-desai.github.io/tags/iot/</guid>
+    <description><![CDATA[]]></description>
+</item><item>
+    <title>Mosquitto</title>
+    <link>https://shantanoo-desai.github.io/tags/mosquitto/</link>
+    <pubDate>Thu, 10 Sep 2020 22:25:58 &#43;0200</pubDate>
+    <author>Author</author>
+    <guid>https://shantanoo-desai.github.io/tags/mosquitto/</guid>
+    <description><![CDATA[]]></description>
+</item><item>
+    <title>MQTT</title>
+    <link>https://shantanoo-desai.github.io/tags/mqtt/</link>
+    <pubDate>Thu, 10 Sep 2020 22:25:58 &#43;0200</pubDate>
+    <author>Author</author>
+    <guid>https://shantanoo-desai.github.io/tags/mqtt/</guid>
+    <description><![CDATA[]]></description>
+</item><item>
+    <title>InfluxDB</title>
+    <link>https://shantanoo-desai.github.io/tags/influxdb/</link>
+    <pubDate>Thu, 03 Sep 2020 14:38:09 &#43;0200</pubDate>
+    <author>Author</author>
+    <guid>https://shantanoo-desai.github.io/tags/influxdb/</guid>
+    <description><![CDATA[]]></description>
+</item><item>
+    <title>Telegraf</title>
+    <link>https://shantanoo-desai.github.io/tags/telegraf/</link>
+    <pubDate>Thu, 03 Sep 2020 14:38:09 &#43;0200</pubDate>
+    <author>Author</author>
+    <guid>https://shantanoo-desai.github.io/tags/telegraf/</guid>
+    <description><![CDATA[]]></description>
+</item><item>
+    <title>QuestDB</title>
+    <link>https://shantanoo-desai.github.io/tags/questdb/</link>
+    <pubDate>Mon, 24 Aug 2020 16:48:37 &#43;0200</pubDate>
+    <author>Author</author>
+    <guid>https://shantanoo-desai.github.io/tags/questdb/</guid>
+    <description><![CDATA[]]></description>
+</item><item>
+    <title>User-Management</title>
+    <link>https://shantanoo-desai.github.io/tags/user-management/</link>
+    <pubDate>Mon, 24 Aug 2020 16:48:37 &#43;0200</pubDate>
+    <author>Author</author>
+    <guid>https://shantanoo-desai.github.io/tags/user-management/</guid>
+    <description><![CDATA[]]></description>
+</item><item>
+    <title>Africa</title>
+    <link>https://shantanoo-desai.github.io/tags/africa/</link>
+    <pubDate>Thu, 18 Jun 2020 20:47:57 &#43;0200</pubDate>
+    <author>Author</author>
+    <guid>https://shantanoo-desai.github.io/tags/africa/</guid>
+    <description><![CDATA[]]></description>
+</item></channel>
+</rss>

@@ -1,0 +1,28 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>Categories - Category - Shan&#39;s Corner</title>
+        <link>https://shantanoo-desai.github.io/categories/</link>
+        <description>Categories - Category - Shan&#39;s Corner</description>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Thu, 10 Sep 2020 22:25:58 &#43;0200</lastBuildDate><atom:link href="https://shantanoo-desai.github.io/categories/" rel="self" type="application/rss+xml" /><item>
+    <title>Technology</title>
+    <link>https://shantanoo-desai.github.io/categories/technology/</link>
+    <pubDate>Thu, 10 Sep 2020 22:25:58 &#43;0200</pubDate>
+    <author>Author</author>
+    <guid>https://shantanoo-desai.github.io/categories/technology/</guid>
+    <description><![CDATA[]]></description>
+</item><item>
+    <title>Bookshelf</title>
+    <link>https://shantanoo-desai.github.io/categories/bookshelf/</link>
+    <pubDate>Thu, 18 Jun 2020 20:47:57 &#43;0200</pubDate>
+    <author>Author</author>
+    <guid>https://shantanoo-desai.github.io/categories/bookshelf/</guid>
+    <description><![CDATA[]]></description>
+</item><item>
+    <title>Quotes</title>
+    <link>https://shantanoo-desai.github.io/categories/quotes/</link>
+    <pubDate>Tue, 19 May 2020 11:26:40 &#43;0200</pubDate>
+    <author>Author</author>
+    <guid>https://shantanoo-desai.github.io/categories/quotes/</guid>
+    <description><![CDATA[]]></description>
+</item></channel>
+</rss>

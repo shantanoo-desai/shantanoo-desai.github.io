@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>Questitto: Light-weight, Blazing Fast Stack for your IoT Application - Shan&#39;s Corner</title><meta name="Description" content="Create a simple IoT Stack with Mosquitto MQTT Broker, Telegraf and QuestDB"><meta property="og:title" content="Questitto: Light-weight, Blazing Fast Stack for your IoT Application" />
+<meta property="og:description" content="Create a simple IoT Stack with Mosquitto MQTT Broker, Telegraf and QuestDB" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://shantanoo-desai.github.io/posts/technology/questitto_light_stack_for_iot/" />
+<meta property="article:published_time" content="2020-08-24T16:48:37+02:00" />
+<meta property="article:modified_time" content="2020-08-24T16:48:37+02:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Questitto: Light-weight, Blazing Fast Stack for your IoT Application"/>
+<meta name="twitter:description" content="Create a simple IoT Stack with Mosquitto MQTT Broker, Telegraf and QuestDB"/>
+<meta name="application-name" content="Shan&#39;s World">
+<meta name="apple-mobile-web-app-title" content="Shan&#39;s World"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://shantanoo-desai.github.io/posts/technology/questitto_light_stack_for_iot/" /><link rel="prev" href="https://shantanoo-desai.github.io/posts/technology/nugget_mqtt_iot/" /><link rel="next" href="https://shantanoo-desai.github.io/posts/technology/nugget_tags_fields_mgmt_with_telegraf_influxdb/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Questitto: Light-weight, Blazing Fast Stack for your IoT Application",
+        "inLanguage": "en",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/shantanoo-desai.github.io\/posts\/technology\/questitto_light_stack_for_iot\/"
+        },"genre": "posts","keywords": "MQTT, IoT, Docker, docker-compose, User-Management, QuestDB","wordcount":  1079 ,
+        "url": "https:\/\/shantanoo-desai.github.io\/posts\/technology\/questitto_light_stack_for_iot\/","datePublished": "2020-08-24T16:48:37+02:00","dateModified": "2020-08-24T16:48:37+02:00","publisher": {
+            "@type": "Organization",
+            "name": "Shan"},"author": {
+                "@type": "Person",
+                "name": "Shan"
+            },"description": "Create a simple IoT Stack with Mosquitto MQTT Broker, Telegraf and QuestDB"
+    }
+    </script></head>
+    <body header-desktop="" header-mobile=""><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="Shan&#39;s Corner">Shan&#39;s Corner</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/" title="My thoughts and works digitally transcribed"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/about/" title="Everything You wish to know about me"> About </a><span class="menu-item delimiter"></span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="Shan&#39;s Corner">Shan&#39;s Corner</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/posts/" title="My thoughts and works digitally transcribed">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/about/" title="Everything You wish to know about me">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">Questitto: Light-weight, Blazing Fast Stack for your IoT Application</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>Shan</a></span>&nbsp;<span class="post-category">included in <a href="/categories/technology/"><i class="far fa-folder fa-fw"></i>Technology</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="24-08-2020">24-08-2020</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;1079 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;6 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#motivation">Motivation</a></li>
+    <li><a href="#stack">Stack</a>
+      <ul>
+        <li><a href="#setup">Setup</a></li>
+        <li><a href="#user-management-for-mosquitto-mqtt-broker">User Management for Mosquitto MQTT Broker</a></li>
+        <li><a href="#input-data-format--mqtt-topic-design">Input Data Format + MQTT Topic Design</a></li>
+        <li><a href="#telegraf-configuration">Telegraf Configuration</a></li>
+        <li><a href="#data-insertion-to-questdb">Data Insertion to QuestDB</a></li>
+        <li><a href="#visualize-it">Visualize It!</a></li>
+      </ul>
+    </li>
+    <li><a href="#example">Example</a></li>
+    <li><a href="#nuggets">Nuggets</a></li>
+    <li><a href="#repository">Repository</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h2 id="overview">Overview</h2>
+<blockquote>
+<p><a href="https://questdb.io" target="_blank" rel="noopener noreffer">QuestDB</a> is the fastest open-source Time-Series Database out there in terms of performance.</p>
+</blockquote>
+<p>The developers were kind enough to welcome me into their community and I wanted to make things easier for people trying
+things out with QuestDB.</p>
+<p>Lo! and behold <a href="https://github.com/shantanoo-desai/questitto" target="_blank" rel="noopener noreffer">Questitto</a> an <em>out-of-the-box</em> repository for your initial IoT Applications. The repository is an altered version
+for my repository <a href="https://github.com/shantanoo-desai/tiguitto" target="_blank" rel="noopener noreffer">tiguitto</a> which helps users deploy the highly used <strong>TIG+Mosquitto (Telegraf, InfluxDB, Grafana) + Mosquitto MQTT Broker</strong> stack in no time.</p>
+<h2 id="motivation">Motivation</h2>
+<p>I am really looking forward to use some <code>SQL</code> queries with Time-Series Databases and <code>QuestDB</code> provides such functionalities as well as
+some cool new features of <a href="https://questdb.io/docs/reference/sql/timestamp/" target="_blank" rel="noopener noreffer">Dynamic Timestamping</a>.</p>
+<p>Not to mention, my staple <a href="https://docs.influxdata.com/influxdb/v1.8/write_protocols/line_protocol_tutorial/" target="_blank" rel="noopener noreffer">InfluxDB&rsquo;s Line Protocol</a> is supported via sockets too!</p>
+<h2 id="stack">Stack</h2>
+<p><code>questitto</code> currently comes with basic user authentication support for Mosquitto MQTT broker. The Broker allows only specific users to publish / subscribe data hence reducing misuse. Telegraf writes the incoming data via subscribing to the MQTT Broker and pushes the data to QuestDB.</p>
+<p>In order to make it easy to deploy, the stack is deployable via <code>docker</code> and configuration is made simple via usage of text files (MQTT broker&rsquo;s users) and an Environment File (for Telegraf)</p>
+<h3 id="setup">Setup</h3>
+<p>Clone the repository:</p>
+<pre><code>git clone https://github.com/shantanoo-desai/questitto.git &amp;&amp; cd questitto/
+</code></pre>
+<p>Your Directory structure should look like:</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">├── docker-compose.yml
+├── LICENSE
+├── mosquitto
+│   ├── config
+│   │   ├── mosquitto.conf
+│   │   └── passwd
+│   └── data
+├── questitto.env
+├── README.md
+└── telegraf
+    └── telegraf.conf
+</code></pre></div><p>Some brief information on the files:</p>
+<ul>
+<li><code>mosquitto/config/passwd</code>: file that has the usernames and passwords necessary for publishing/subscribing to the MQTT broker</li>
+<li><code>questitto.env</code>: environment variable file used by <code>telegraf</code> container to subscribe to the MQTT Broker for data ingestion</li>
+<li><code>telegraf/telegraf.conf</code>: TOML Configuration file for letting <code>telegraf</code> do the heavy lifting and inserting the data into QuestDB</li>
+</ul>
+<h3 id="user-management-for-mosquitto-mqtt-broker">User Management for Mosquitto MQTT Broker</h3>
+<p>In the repository there are two users added by default (see <code>mosquitto/config/passwd</code> file):</p>
+<pre><code>    pubclient:questitto
+    subclient:questitto
+</code></pre><p>You can use the <code>pubclient</code> credential on your IoT Devices / MQTT Client to publish information to the Broker. Similarly, <code>subclient</code> credential will be used by <code>telegraf</code> or any other user of the stack in order to subscribe to the incoming data. Feel free to change the passwords for the usernames or add more credentials according to your needs. The format for the credential entries is as follows (in plain text):</p>
+<pre><code>username1:password1
+username2:password2
+</code></pre><div class="details admonition note open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-pencil-alt fa-fw"></i>Note<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">Mosquitto Broker requires the the credentials to be encrypted and hence you bring the stack up with encrypting the passwords, the broker container will fail to start</div>
+        </div>
+    </div>
+<p>Let&rsquo;s encrypt the passwords using the following command:</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># assuming your current directory is questitto</span>
+docker run -it --rm -v <span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/mosquitto/config:/mosquitto/config eclipse-mosquitto mosquitto_passwd -U /mosquitto/config/passwd
+</code></pre></div><p>The command does not return anything hence, after executing the command check the <code>mosquitto/config/passwd</code> file using:</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">cat mosquitto/config/passwd
+</code></pre></div><h3 id="input-data-format--mqtt-topic-design">Input Data Format + MQTT Topic Design</h3>
+<blockquote>
+<p>For IoT Applications, let the higher components in the stack do the heavy-lifting i.e. <code>telegraf</code> and <code>mosquitto</code> and keep the payload and topics very simple</p>
+</blockquote>
+<p>As an example the MQTT Topics are selected as follows:</p>
+<pre><code>IOT/&lt;SensorID&gt;/&lt;measurement_name&gt;
+</code></pre><p>if your IoT sensor publishes temperature data then you can publish it to a topic:</p>
+<pre><code>IOT/sensor1/temp
+</code></pre><p>with the payload in <strong>InfluxDB Line Protocol String</strong>:</p>
+<pre><code>environment,type=BME280 temp=23.9
+</code></pre><p>We then let <code>telegraf</code> translate the location of <code>sensor1</code> for us using the <code>processors</code> plugin and the MQTT topic itself.</p>
+<h3 id="telegraf-configuration">Telegraf Configuration</h3>
+<p><code>telegraf</code> subscribes to the MQTT Broker using the <code>subclient</code> credential mentioned above.</p>
+<div class="details admonition note open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-pencil-alt fa-fw"></i>Note<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">If you change the user credentials, make sure to encrypt the password and change the <code>questitto.env</code> file with the actual credentials for <code>telegraf</code></div>
+        </div>
+    </div>
+<p>Let&rsquo;s look at how <code>telegraf</code> can add our sensor&rsquo;s location for us.</p>
+<p>We use the <code>inputs.mqtt_consumer</code> plugin to connect to our broker and subscribe to it via the credentials in the <code>.env</code> file:</p>
+<div class="highlight"><pre class="chroma"><code class="language-toml" data-lang="toml"><span class="p">[[</span><span class="nx">inputs</span><span class="p">.</span><span class="nx">mqtt_consumer</span><span class="p">]]</span>
+
+    <span class="nx">servers</span> <span class="p">=</span> <span class="p">[</span> <span class="s2">&#34;tcp://mosquitto:1883&#34;</span> <span class="p">]</span>
+
+    <span class="c"># Topics to subscribe to:</span>
+    <span class="nx">topics</span> <span class="p">=</span> <span class="p">[</span>
+        <span class="s2">&#34;IOT/+/acc&#34;</span><span class="p">,</span>
+        <span class="s2">&#34;IOT/+/mag&#34;</span><span class="p">,</span>
+        <span class="s2">&#34;IOT/+/gyro&#34;</span><span class="p">,</span>
+        <span class="s2">&#34;IOT/+/temp&#34;</span>
+    <span class="p">]</span>
+
+    <span class="c"># Telegraf will also store the topic as a tag with name `topic`</span>
+    <span class="c"># NOTE: necessary for the Processor REGEX to extract &lt;Sensor_ID&gt;</span>
+    <span class="nx">topic_tag</span> <span class="p">=</span> <span class="s2">&#34;topic&#34;</span>
+
+    <span class="nx">username</span> <span class="p">=</span> <span class="s2">&#34;${TG_MOSQUITTO_USERNAME}&#34;</span>
+    <span class="nx">password</span> <span class="p">=</span> <span class="s2">&#34;${TG_MOSQUITTO_PASSWORD}&#34;</span>
+
+    <span class="c"># Connection timeout</span>
+    <span class="nx">connection_timeout</span> <span class="p">=</span> <span class="s2">&#34;30s&#34;</span>
+
+    <span class="c"># Incoming MQTT Payload from Sensor nodes is in InfluxDB Line Protocol strings</span>
+    <span class="nx">data_format</span> <span class="p">=</span> <span class="s2">&#34;influx&#34;</span>
+</code></pre></div><p>we store the MQTT topic as a <code>tag</code> called <code>topic</code> and now leverage it for some Regular Expression and Enumeration Magic as follows:</p>
+<div class="highlight"><pre class="chroma"><code class="language-toml" data-lang="toml"><span class="p">[[</span><span class="nx">processors</span><span class="p">.</span><span class="nx">regex</span><span class="p">]]</span>
+
+    <span class="nx">order</span> <span class="p">=</span> <span class="mi">1</span>
+
+    <span class="p">[[</span><span class="nx">processors</span><span class="p">.</span><span class="nx">regex</span><span class="p">.</span><span class="nx">tags</span><span class="p">]]</span>
+
+        <span class="c"># use the `topic` tag to extract information from the MQTT Topic</span>
+        <span class="nx">key</span> <span class="p">=</span> <span class="s2">&#34;topic&#34;</span>
+        <span class="c"># Topic: IOT/&lt;SENSOR_ID&gt;/&lt;measurement&gt;</span>
+        <span class="c"># Extract &lt;SENSOR_ID&gt;</span>
+        <span class="nx">pattern</span> <span class="p">=</span> <span class="s2">&#34;.*/(.*)/.*&#34;</span>
+        <span class="c"># Replace the first occurrence</span>
+        <span class="nx">replacement</span> <span class="p">=</span> <span class="s2">&#34;${1}&#34;</span>
+        <span class="c"># Store it in tag called:</span>
+        <span class="nx">result_key</span> <span class="p">=</span> <span class="s2">&#34;sensorID&#34;</span>
+
+
+<span class="p">[[</span><span class="nx">processors</span><span class="p">.</span><span class="nx">enum</span><span class="p">]]</span>
+
+    <span class="nx">order</span> <span class="p">=</span> <span class="mi">2</span>
+
+    <span class="p">[[</span><span class="nx">processors</span><span class="p">.</span><span class="nx">enum</span><span class="p">.</span><span class="nx">mapping</span><span class="p">]]</span>
+
+        <span class="c"># create a mapping between extracted sensorID and some meta-data</span>
+        <span class="nx">tag</span> <span class="p">=</span> <span class="s2">&#34;sensorID&#34;</span>
+        <span class="nx">dest</span> <span class="p">=</span> <span class="s2">&#34;location&#34;</span>
+
+        <span class="p">[</span><span class="nx">processors</span><span class="p">.</span><span class="nx">enum</span><span class="p">.</span><span class="nx">mapping</span><span class="p">.</span><span class="nx">value_mappings</span><span class="p">]</span>
+            <span class="s2">&#34;sensor1&#34;</span> <span class="p">=</span> <span class="s2">&#34;kitchen&#34;</span>
+            <span class="s2">&#34;sensor2&#34;</span> <span class="p">=</span> <span class="s2">&#34;livingroom&#34;</span>
+</code></pre></div><p>Based on our MQTT Topic design we know that the <code>SensorID</code> will be on the second level i.e. <code>IOT/(.*)/#</code>.</p>
+<p>We perform the Regular Expression to extract the sensor&rsquo;s ID and use <code>enum</code> to map it to its dedicated location:</p>
+<pre><code>sensor1 --&gt; kitchen
+sensor2 --&gt; livingroom
+</code></pre><p>The location will be stored as a <code>tag</code> called <code>location</code>.</p>
+<h3 id="data-insertion-to-questdb">Data Insertion to QuestDB</h3>
+<div class="highlight"><pre class="chroma"><code class="language-toml" data-lang="toml"><span class="p">[[</span><span class="nx">outputs</span><span class="p">.</span><span class="nx">socket_writer</span><span class="p">]]</span>
+    <span class="nx">address</span> <span class="p">=</span> <span class="s2">&#34;tcp://questdb:9009&#34;</span>
+</code></pre></div><p>will send the Line Protocol String to port 9009 of the <code>questdb</code> container and you don&rsquo;t even need to define a schema beforehand!</p>
+<h3 id="visualize-it">Visualize It!</h3>
+<p>QuestDB comes with its own cool UI available on <code>http://&lt;IP_address&gt;:9000</code></p>
+<h2 id="example">Example</h2>
+<p>Get the Stack up:</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">docker-compose up -d
+</code></pre></div><p>As a simple Example I used <a href="https://mqttfx.org" target="_blank" rel="noopener noreffer">MQTT.fx</a> as a client to publish information in Line Protocol to the following Topic:</p>
+<div class="highlight"><pre class="chroma"><code class="language-json" data-lang="json"><span class="p">{</span>
+    <span class="nt">&#34;topic&#34;</span><span class="p">:</span> <span class="s2">&#34;IOT/sensor1/acc&#34;</span><span class="p">,</span>
+    <span class="nt">&#34;payload&#34;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">&#34;accleration,type=BNO055 x=2.3,y=3.2,z=0.01&#34;</span><span class="p">,</span>
+        <span class="s2">&#34;accleration,type=BNO055 x=2.3,y=3.2,z=0.01&#34;</span><span class="p">,</span>
+        <span class="s2">&#34;accleration,type=BNO055 x=2.3,y=3.2,z=0.02&#34;</span><span class="p">,</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div><p>with the <code>pubclient:questitto</code> credentials and on the QuestDB UI you can see:</p>
+<figure>
+    <img src="/images/technology/questitto/Questitto_Tables.png"/> <figcaption>
+            <h4>Automatic Table Creation based on InfluxDB Line Protocol Measurement Name</h4>
+        </figcaption>
+</figure>
+
+<p>With the <code>location</code> and other <code>tags</code> from the Line Protocol inserted:</p>
+<figure>
+    <img src="/images/technology/questitto/Questitto_Table_Schema.png"/> <figcaption>
+            <h4>Columns created by QuestDB for acceleration Table</h4>
+        </figcaption>
+</figure>
+
+<p>A simple query where I would like to know the acceleration value in the <code>kitchen</code> for the <strong>X-axis</strong> is as simple as:</p>
+<pre><code>SELECT timestamp, x FROM acceleration
+WHERE location = 'kitchen';
+</code></pre><h2 id="nuggets">Nuggets</h2>
+<p>If you need to add/remove or adapt the Users or the <code>telegraf.conf</code> without bringing down the stack or the services within <code>questitto</code> simply use the <code>SIGHUP</code> signal for the containers.</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">docker <span class="nb">kill</span> --signal<span class="o">=</span>SIGHUP mosquitto
+<span class="c1"># OR</span>
+docker <span class="nb">kill</span> --signal<span class="o">=</span>SIGHUP telegraf
+</code></pre></div><p>See <a href="https://shantanoo-desai.github.io/posts/technology/nugget_mqtt_iot/" target="_blank" rel="noopener noreffer">my blog post</a> for a detailed write up.</p>
+<h2 id="repository">Repository</h2>
+<p>You can find the <a href="https://github.com/shantanoo-desai/questitto" target="_blank" rel="noopener noreffer">repository on GitHub</a>. Please feel free to open Issues/PRs and join the <a href="questdb.slack.com" rel="">QuestDB Slack Community</a>, the developers are really helpful there!</p></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 24-08-2020</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://shantanoo-desai.github.io/posts/technology/questitto_light_stack_for_iot/" data-title="Questitto: Light-weight, Blazing Fast Stack for your IoT Application" data-hashtags="MQTT,IoT,Docker,docker-compose,User-Management,QuestDB"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://shantanoo-desai.github.io/posts/technology/questitto_light_stack_for_iot/" data-hashtag="MQTT"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="https://shantanoo-desai.github.io/posts/technology/questitto_light_stack_for_iot/"><i class="fab fa-linkedin fa-fw"></i></a><a href="javascript:void(0);" title="Share on WhatsApp" data-sharer="whatsapp" data-url="https://shantanoo-desai.github.io/posts/technology/questitto_light_stack_for_iot/" data-title="Questitto: Light-weight, Blazing Fast Stack for your IoT Application" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="https://shantanoo-desai.github.io/posts/technology/questitto_light_stack_for_iot/" data-title="Questitto: Light-weight, Blazing Fast Stack for your IoT Application"><i class="fab fa-hacker-news fa-fw"></i></a><a href="javascript:void(0);" title="Share on Reddit" data-sharer="reddit" data-url="https://shantanoo-desai.github.io/posts/technology/questitto_light_stack_for_iot/"><i class="fab fa-reddit fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/mqtt/">MQTT</a>,&nbsp;<a href="/tags/iot/">IoT</a>,&nbsp;<a href="/tags/docker/">Docker</a>,&nbsp;<a href="/tags/docker-compose/">docker-compose</a>,&nbsp;<a href="/tags/user-management/">User-Management</a>,&nbsp;<a href="/tags/questdb/">QuestDB</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/technology/nugget_mqtt_iot/" class="prev" rel="prev" title="Nugget: User Management in MQTT Mosquitto Broker with Docker"><i class="fas fa-angle-left fa-fw"></i>Nugget: User Management in MQTT Mosquitto Broker with Docker</a>
+            <a href="/posts/technology/nugget_tags_fields_mgmt_with_telegraf_influxdb/" class="next" rel="next" title="Nugget: Let Telegraf manage your InfluxDB Fields and Tags for you">Nugget: Let Telegraf manage your InfluxDB Fields and Tags for you<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.70.0">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2020</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank"></a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><script type="text/javascript" src="/lib/smooth-scroll/smooth-scroll.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":20},"comment":{}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>
