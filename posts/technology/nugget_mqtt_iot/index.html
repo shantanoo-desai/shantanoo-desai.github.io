@@ -1,221 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="robots" content="noodp" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
-        <title>Nugget: User Management in MQTT Mosquitto Broker with Docker - Shan&#39;s Corner</title><meta name="Description" content="How to manage Users for your Mosquitto MQTT broker docker container without restarting the container"><meta property="og:title" content="Nugget: User Management in MQTT Mosquitto Broker with Docker" />
-<meta property="og:description" content="How to manage Users for your Mosquitto MQTT broker docker container without restarting the container" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://shantanoo-desai.github.io/posts/technology/nugget_mqtt_iot/" />
-<meta property="article:published_time" content="2020-08-19T20:20:03+02:00" />
-<meta property="article:modified_time" content="2020-08-19T20:20:03+02:00" />
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Nugget: User Management in MQTT Mosquitto Broker with Docker"/>
-<meta name="twitter:description" content="How to manage Users for your Mosquitto MQTT broker docker container without restarting the container"/>
-<meta name="application-name" content="Shan&#39;s World">
-<meta name="apple-mobile-web-app-title" content="Shan&#39;s World"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://shantanoo-desai.github.io/posts/technology/nugget_mqtt_iot/" /><link rel="prev" href="https://shantanoo-desai.github.io/posts/books/matar_hisham_the_return/" /><link rel="next" href="https://shantanoo-desai.github.io/posts/technology/questitto_light_stack_for_iot/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
-    {
-        "@context": "http://schema.org",
-        "@type": "BlogPosting",
-        "headline": "Nugget: User Management in MQTT Mosquitto Broker with Docker",
-        "inLanguage": "en",
-        "mainEntityOfPage": {
-            "@type": "WebPage",
-            "@id": "https:\/\/shantanoo-desai.github.io\/posts\/technology\/nugget_mqtt_iot\/"
-        },"genre": "posts","keywords": "MQTT, IoT, Docker, docker-compose, User-Management","wordcount":  737 ,
-        "url": "https:\/\/shantanoo-desai.github.io\/posts\/technology\/nugget_mqtt_iot\/","datePublished": "2020-08-19T20:20:03+02:00","dateModified": "2020-08-19T20:20:03+02:00","publisher": {
-            "@type": "Organization",
-            "name": "Shan"},"author": {
-                "@type": "Person",
-                "name": "Shan"
-            },"description": "How to manage Users for your Mosquitto MQTT broker docker container without restarting the container"
-    }
-    </script></head>
-    <body header-desktop="" header-mobile=""><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
-
-        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
-    <div class="header-wrapper">
-        <div class="header-title">
-            <a href="/" title="Shan&#39;s Corner">Shan&#39;s Corner</a>
-        </div>
-        <div class="menu">
-            <div class="menu-inner"><a class="menu-item" href="/posts/" title="My thoughts and works digitally transcribed"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/about/" title="Everything You wish to know about me"> About </a><span class="menu-item delimiter"></span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
-                    <i class="fas fa-adjust fa-fw"></i>
-                </a>
-            </div>
-        </div>
-    </div>
-</header><header class="mobile" id="header-mobile">
-    <div class="header-container">
-        <div class="header-wrapper">
-            <div class="header-title">
-                <a href="/" title="Shan&#39;s Corner">Shan&#39;s Corner</a>
-            </div>
-            <div class="menu-toggle" id="menu-toggle-mobile">
-                <span></span><span></span><span></span>
-            </div>
-        </div>
-        <div class="menu" id="menu-mobile"><a class="menu-item" href="/posts/" title="My thoughts and works digitally transcribed">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/about/" title="Everything You wish to know about me">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
-                <i class="fas fa-adjust fa-fw"></i>
-            </a></div>
-    </div>
-</header>
-<div class="search-dropdown desktop">
-    <div id="search-dropdown-desktop"></div>
-</div>
-<div class="search-dropdown mobile">
-    <div id="search-dropdown-mobile"></div>
-</div>
-<main class="main">
-                <div class="container"><div class="toc" id="toc-auto">
-            <h2 class="toc-title">Contents</h2>
-            <div class="toc-content" id="toc-content-auto"></div>
-        </div><article class="page single"><h1 class="single-title animated flipInX">Nugget: User Management in MQTT Mosquitto Broker with Docker</h1><div class="post-meta">
-            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>Shan</a></span>&nbsp;<span class="post-category">included in <a href="/categories/technology/"><i class="far fa-folder fa-fw"></i>Technology</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="19-08-2020">19-08-2020</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;737 words&nbsp;
-                <i class="far fa-clock fa-fw"></i>&nbsp;4 minutes&nbsp;</div>
-        </div><div class="details toc" id="toc-static"  kept="">
-                <div class="details-summary toc-title">
-                    <span>Contents</span>
-                    <span><i class="details-icon fas fa-angle-right"></i></span>
-                </div>
-                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
-  <ul>
-    <li><a href="#overview">Overview</a></li>
-    <li><a href="#solution">Solution</a></li>
-    <li><a href="#getting-hands-greasy">Getting Hands Greasy!</a>
-      <ul>
-        <li><a href="#adding-users-to-mosquitto-mqtt-broker">Adding Users to Mosquitto MQTT Broker</a></li>
-        <li><a href="#deleting-a-user-from-the-mqtt-broker">Deleting A User from the MQTT Broker</a></li>
-      </ul>
-    </li>
-    <li><a href="#conclusions">Conclusions</a></li>
-    <li><a href="#future-works">Future Works</a></li>
-  </ul>
-</nav></div>
-            </div><div class="content" id="content"><h2 id="overview">Overview</h2>
-<p>If you use <code>docker</code> or <code>docker-compose</code> often to setup your IoT Stacks, you might want be at crossroads where Security and User Management
-becomes the next necessary step to improve the Stack. This post builds upon <a href="https://github.com/shantanoo/tiguitto" target="_blank" rel="noopener noreffer">tiguitto</a> which provides
-different set of security measures to the <strong>TIG (Telegraf, InfluxDB, Grafana) + Mosquitto MQTT Broker</strong> stack.</p>
-<p>During the learning phase of setting up the stacks, there came a crucial requirement about how to <em>add/remove</em> user management to the MQTT Mosquitto Broker. In the stack, there are only two services - <strong>Grafana</strong> and <strong>Mosquitto MQTT Broker</strong>, which would require user management. Grafana, tends to provide an easy way via UI to manage users. To the best of my knowledge, no UI for Mosquitto Broker since it is mostly a CLI based service.</p>
-<blockquote>
-<p>I was very skeptical whether one can manage Mosquitto Broker users without <em>restarting</em> the <code>mosquitto</code> container.
-I wanted to avoid downtime in the stack</p>
-</blockquote>
-<p>Apparently, there is a way to avoid a downtime to add/remove users to the Broker. Let&rsquo;s look into it!</p>
-<h2 id="solution">Solution</h2>
-<p>According to <a href="https://mosquitto.org/man/mosquitto-8.html#" target="_blank" rel="noopener noreffer">mosquitto&rsquo;s man page</a> <code>mosquitto</code> responds to a <strong>SIGNAL</strong> called <code>SIGHUP</code>. The documentation mentions:</p>
-<div class="details admonition note open">
-        <div class="details-summary admonition-title">
-            <i class="icon fas fa-pencil-alt fa-fw"></i>Note<i class="details-icon fas fa-angle-right fa-fw"></i>
-        </div>
-        <div class="details-content">
-            <div class="admonition-content"><p>SIGHUP</p>
-<p>Upon receiving the SIGHUP signal, mosquitto will attempt to reload configuration file data, assuming that the -c argument was provided when mosquitto was started. Not all configuration parameters can be reloaded without restarting. See mosquitto.conf(5) for details.</p>
-</div>
-        </div>
-    </div>
-<p>The next step was to check how to send signals to a specific <code>docker</code> container. This is also possible via <code>docker</code> CLI as answered in <a href="https://stackoverflow.com/questions/25687131/how-to-send-signal-to-program-run-in-a-docker-container" target="_blank" rel="noopener noreffer">this StackOverflow Query</a>.</p>
-<p>If your container is named <code>mosquitto</code> in your <code>docker-compose.yml</code> file, the the following will work:</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">docker <span class="nb">kill</span> --signal<span class="o">=</span>SIGHUP mosquitto
-<span class="c1"># OR</span>
-docker <span class="nb">kill</span> --signal<span class="o">=</span>SIGHUP &lt;container_id&gt;
-</code></pre></div><h2 id="getting-hands-greasy">Getting Hands Greasy!</h2>
-<p>As a simple example if you use the <a href="https://github.com/shantanoo/tiguitto" target="_blank" rel="noopener noreffer">tiguitto</a> repository you can simply following the documentation in the repository to setup a Stack easily based on your requirement. For the sake of understanding, we will assume you are using the most simple use-case <a href="https://github.com/shantanoo-desai/tiguitto/tree/master/prototype" target="_blank" rel="noopener noreffer"><code>PROTOTYPE</code></a> case from the repository.</p>
-<p>If you use the case <em>out-of-the-box</em>, there are already two users added to the Broker:</p>
-<pre><code>    # mosquitto/config/passwd file in the Prototype Case from tiguitto
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><meta http-equiv=x-ua-compatible content="IE=edge, chrome=1"><title>Nugget: User Management in MQTT Mosquitto Broker with Docker - Shan's Corner</title><meta name=Description content="How to manage Users for your Mosquitto MQTT broker docker container without restarting the container"><meta property="og:title" content="Nugget: User Management in MQTT Mosquitto Broker with Docker"><meta property="og:description" content="How to manage Users for your Mosquitto MQTT broker docker container without restarting the container"><meta property="og:type" content="article"><meta property="og:url" content="https://shantanoo-desai.github.io/posts/technology/nugget_mqtt_iot/"><meta property="article:published_time" content="2020-08-19T20:20:03+02:00"><meta property="article:modified_time" content="2020-08-19T20:20:03+02:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="Nugget: User Management in MQTT Mosquitto Broker with Docker"><meta name=twitter:description content="How to manage Users for your Mosquitto MQTT broker docker container without restarting the container"><meta name=application-name content="Shan's World"><meta name=apple-mobile-web-app-title content="Shan's World"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=manifest href=/site.webmanifest><link rel=canonical href=https://shantanoo-desai.github.io/posts/technology/nugget_mqtt_iot/><link rel=prev href=https://shantanoo-desai.github.io/posts/books/matar_hisham_the_return/><link rel=next href=https://shantanoo-desai.github.io/posts/technology/questitto_light_stack_for_iot/><link rel=stylesheet href=/lib/normalize/normalize.min.css><link rel=stylesheet href=/css/style.min.css><link rel=stylesheet href=/lib/fontawesome-free/all.min.css><link rel=stylesheet href=/lib/animate/animate.min.css><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"Nugget: User Management in MQTT Mosquitto Broker with Docker","inLanguage":"en","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/shantanoo-desai.github.io\/posts\/technology\/nugget_mqtt_iot\/"},"genre":"posts","keywords":"MQTT, IoT, Docker, docker-compose, User-Management","wordcount":737,"url":"https:\/\/shantanoo-desai.github.io\/posts\/technology\/nugget_mqtt_iot\/","datePublished":"2020-08-19T20:20:03+02:00","dateModified":"2020-08-19T20:20:03+02:00","publisher":{"@type":"Organization","name":"Shan"},"author":{"@type":"Person","name":"Shan"},"description":"How to manage Users for your Mosquitto MQTT broker docker container without restarting the container"}</script></head><body header-desktop header-mobile><script type=text/javascript>(window.localStorage&&localStorage.getItem('theme')?localStorage.getItem('theme')==='dark':('auto'==='auto'?window.matchMedia('(prefers-color-scheme: dark)').matches:'auto'==='dark'))&&document.body.setAttribute('theme','dark');</script><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><div class=header-title><a href=/ title="Shan's Corner">Shan's Corner</a></div><div class=menu><div class=menu-inner><a class=menu-item href=/posts/ title="My thoughts and works digitally transcribed">Posts </a><a class=menu-item href=/tags/>Tags </a><a class=menu-item href=/categories/>Categories </a><a class=menu-item href=/about/ title="Everything You wish to know about me">About </a><span class="menu-item delimiter"></span><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme"><i class="fas fa-adjust fa-fw"></i></a></div></div></div></header><header class=mobile id=header-mobile><div class=header-container><div class=header-wrapper><div class=header-title><a href=/ title="Shan's Corner">Shan's Corner</a></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><div class=menu id=menu-mobile><a class=menu-item href=/posts/ title="My thoughts and works digitally transcribed">Posts</a><a class=menu-item href=/tags/>Tags</a><a class=menu-item href=/categories/>Categories</a><a class=menu-item href=/about/ title="Everything You wish to know about me">About</a><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
+<i class="fas fa-adjust fa-fw"></i></a></div></div></header><div class="search-dropdown desktop"><div id=search-dropdown-desktop></div></div><div class="search-dropdown mobile"><div id=search-dropdown-mobile></div></div><main class=main><div class=container><div class=toc id=toc-auto><h2 class=toc-title>Contents</h2><div class=toc-content id=toc-content-auto></div></div><article class="page single"><h1 class="single-title animated flipInX">Nugget: User Management in MQTT Mosquitto Broker with Docker</h1><div class=post-meta><div class=post-meta-line><span class=post-author><a href=/ title=Author rel=author class=author><i class="fas fa-user-circle fa-fw"></i>Shan</a></span>&nbsp;<span class=post-category>included in <a href=/categories/technology/><i class="far fa-folder fa-fw"></i>Technology</a></span></div><div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=19-08-2020>19-08-2020</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;737 words&nbsp;
+<i class="far fa-clock fa-fw"></i>&nbsp;4 minutes&nbsp;</div></div><div class="details toc" id=toc-static kept><div class="details-summary toc-title"><span>Contents</span>
+<span><i class="details-icon fas fa-angle-right"></i></span></div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents><ul><li><a href=#overview>Overview</a></li><li><a href=#solution>Solution</a></li><li><a href=#getting-hands-greasy>Getting Hands Greasy!</a><ul><li><a href=#adding-users-to-mosquitto-mqtt-broker>Adding Users to Mosquitto MQTT Broker</a></li><li><a href=#deleting-a-user-from-the-mqtt-broker>Deleting A User from the MQTT Broker</a></li></ul></li><li><a href=#conclusions>Conclusions</a></li><li><a href=#future-works>Future Works</a></li></ul></nav></div></div><div class=content id=content><h2 id=overview>Overview</h2><p>If you use <code>docker</code> or <code>docker-compose</code> often to setup your IoT Stacks, you might want be at crossroads where Security and User Management
+becomes the next necessary step to improve the Stack. This post builds upon <a href=https://github.com/shantanoo/tiguitto target=_blank rel="noopener noreffer">tiguitto</a> which provides
+different set of security measures to the <strong>TIG (Telegraf, InfluxDB, Grafana) + Mosquitto MQTT Broker</strong> stack.</p><p>During the learning phase of setting up the stacks, there came a crucial requirement about how to <em>add/remove</em> user management to the MQTT Mosquitto Broker. In the stack, there are only two services - <strong>Grafana</strong> and <strong>Mosquitto MQTT Broker</strong>, which would require user management. Grafana, tends to provide an easy way via UI to manage users. To the best of my knowledge, no UI for Mosquitto Broker since it is mostly a CLI based service.</p><blockquote><p>I was very skeptical whether one can manage Mosquitto Broker users without <em>restarting</em> the <code>mosquitto</code> container.
+I wanted to avoid downtime in the stack</p></blockquote><p>Apparently, there is a way to avoid a downtime to add/remove users to the Broker. Let&rsquo;s look into it!</p><h2 id=solution>Solution</h2><p>According to <a href=https://mosquitto.org/man/mosquitto-8.html# target=_blank rel="noopener noreffer">mosquitto&rsquo;s man page</a> <code>mosquitto</code> responds to a <strong>SIGNAL</strong> called <code>SIGHUP</code>. The documentation mentions:</p><div class="details admonition note open"><div class="details-summary admonition-title"><i class="icon fas fa-pencil-alt fa-fw"></i>Note<i class="details-icon fas fa-angle-right fa-fw"></i></div><div class=details-content><div class=admonition-content><p>SIGHUP</p><p>Upon receiving the SIGHUP signal, mosquitto will attempt to reload configuration file data, assuming that the -c argument was provided when mosquitto was started. Not all configuration parameters can be reloaded without restarting. See mosquitto.conf(5) for details.</p></div></div></div><p>The next step was to check how to send signals to a specific <code>docker</code> container. This is also possible via <code>docker</code> CLI as answered in <a href=https://stackoverflow.com/questions/25687131/how-to-send-signal-to-program-run-in-a-docker-container target=_blank rel="noopener noreffer">this StackOverflow Query</a>.</p><p>If your container is named <code>mosquitto</code> in your <code>docker-compose.yml</code> file, the the following will work:</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash>docker <span class=nb>kill</span> --signal<span class=o>=</span>SIGHUP mosquitto
+<span class=c1># OR</span>
+docker <span class=nb>kill</span> --signal<span class=o>=</span>SIGHUP &lt;container_id&gt;
+</code></pre></div><h2 id=getting-hands-greasy>Getting Hands Greasy!</h2><p>As a simple example if you use the <a href=https://github.com/shantanoo/tiguitto target=_blank rel="noopener noreffer">tiguitto</a> repository you can simply following the documentation in the repository to setup a Stack easily based on your requirement. For the sake of understanding, we will assume you are using the most simple use-case <a href=https://github.com/shantanoo-desai/tiguitto/tree/master/prototype target=_blank rel="noopener noreffer"><code>PROTOTYPE</code></a> case from the repository.</p><p>If you use the case <em>out-of-the-box</em>, there are already two users added to the Broker:</p><pre><code>    # mosquitto/config/passwd file in the Prototype Case from tiguitto
     # username:password
 
     pubclient:tiguitto
     subclient:tiguitto
-</code></pre><p>The <code>pubclient</code> username can be used by an Sensor Node to publish data to the broker.</p>
-<h3 id="adding-users-to-mosquitto-mqtt-broker">Adding Users to Mosquitto MQTT Broker</h3>
-<p>Let&rsquo;s add a user <code>pubclient1</code> with password <code>tiguitto</code>.</p>
-<p>Open the <code>mosquitto/config/passwd</code> file and add a new username for a new Sensor Node:</p>
-<pre><code>pubclient:$6$ITRzMkBDHn7MKJ95$i/Ea2KniGMmV9jomR0+jyl40c0YK1eTwTeyKms95obREDFZzhEIQhTntncJeX3PS9eoj9u
+</code></pre><p>The <code>pubclient</code> username can be used by an Sensor Node to publish data to the broker.</p><h3 id=adding-users-to-mosquitto-mqtt-broker>Adding Users to Mosquitto MQTT Broker</h3><p>Let&rsquo;s add a user <code>pubclient1</code> with password <code>tiguitto</code>.</p><p>Open the <code>mosquitto/config/passwd</code> file and add a new username for a new Sensor Node:</p><pre><code>pubclient:$6$ITRzMkBDHn7MKJ95$i/Ea2KniGMmV9jomR0+jyl40c0YK1eTwTeyKms95obREDFZzhEIQhTntncJeX3PS9eoj9u
 R+ATtS8kGowA==
 subclient:$6$0lEyFrntsYvkzU7N$24t0vyKVSeEBiSOdvOExaMG67F5xfHeVw8zBxdPtb9BVjchKFNdiI7WaJApVkVZ/DS+MMk
 xWycgOeizTmA==
 pubclient1:tiguitto
-</code></pre><p>The <code>pubclient</code> and <code>subclient</code> have passwords encrypted, hence the garbled string.</p>
-<h4 id="encrypt-the-password-for-the-new-user">Encrypt the Password for the New User</h4>
-<p>Assuming, you are in <code>tiguitto/prototype</code> directory we can encrypt the password using the following the command:</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">
-docker run -it --rm -v <span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/mosquitto/config:/mosquitto/config eclipse-mosquitto mosquitto_passwd -U /mosquitto/config/passwd
-</code></pre></div><p>If you do not get a response on the terminal, your password is encrypted. Check the <code>mosquitto/config/passwd</code> file:</p>
-<pre><code>pubclient:$6$ITRzMkBDHn7MKJ95$i/Ea2KniGMmV9jomR0+jyl40c0YK1eTwTeyKms95obREDFZzhEIQhTntncJeX3PS9eoj9u
+</code></pre><p>The <code>pubclient</code> and <code>subclient</code> have passwords encrypted, hence the garbled string.</p><h4 id=encrypt-the-password-for-the-new-user>Encrypt the Password for the New User</h4><p>Assuming, you are in <code>tiguitto/prototype</code> directory we can encrypt the password using the following the command:</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash>
+docker run -it --rm -v <span class=k>$(</span><span class=nb>pwd</span><span class=k>)</span>/mosquitto/config:/mosquitto/config eclipse-mosquitto mosquitto_passwd -U /mosquitto/config/passwd
+</code></pre></div><p>If you do not get a response on the terminal, your password is encrypted. Check the <code>mosquitto/config/passwd</code> file:</p><pre><code>pubclient:$6$ITRzMkBDHn7MKJ95$i/Ea2KniGMmV9jomR0+jyl40c0YK1eTwTeyKms95obREDFZzhEIQhTntncJeX3PS9eoj9u
 R+ATtS8kGowA==
 subclient:$6$0lEyFrntsYvkzU7N$24t0vyKVSeEBiSOdvOExaMG67F5xfHeVw8zBxdPtb9BVjchKFNdiI7WaJApVkVZ/DS+MMk
 xWycgOeizTmA==
 pubclient1:$6$ue8f+Z9OlNRoPM6C$ay+mX+UMKfLWMvZqc9+4s+cFT7NOXhFfQ6iNW1dIuxnxVRDngWSnKBgkCC5h3l1M3b2Uq
 KMw73dKXS05xQ==
-</code></pre><h4 id="reload-the-configuration-file">Reload the Configuration File</h4>
-<p>from the same directory perform:</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">docker <span class="nb">kill</span> --signal<span class="o">=</span>SIGHUP mosquitto
-<span class="c1"># OR</span>
+</code></pre><h4 id=reload-the-configuration-file>Reload the Configuration File</h4><p>from the same directory perform:</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash>docker <span class=nb>kill</span> --signal<span class=o>=</span>SIGHUP mosquitto
+<span class=c1># OR</span>
 docker-compose -f docker-compose.prototype.yml -s SIGHUP mosquitto
-</code></pre></div><p>This should provide a log in the <code>mosquitto</code> container as following:</p>
-<pre><code>mosquitto    | 1597864573: Reloading config.
-</code></pre>
-<p>Tada! 👏👏👏 New publishing client <code>pubclient1</code> added!!</p>
-<p>Use an MQTT Client to publish data to the broker with the new credentials.</p>
-<h3 id="deleting-a-user-from-the-mqtt-broker">Deleting A User from the MQTT Broker</h3>
-<p>Let&rsquo;s remove <code>pubclient1</code> from the <code>mosquitto/config/passwd</code> by executing the following:</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">docker run -it --rm -v <span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/mosquitto/config:/mosquitto/config/ eclipse-mosquitto  mosquitto_passwd -D /mosquitto/config/passwd pubclient1
-</code></pre></div><p>The <code>-D &lt;password_file&gt; &lt;username_to_remove&gt;</code> will remove the username from the password file.</p>
-<h4 id="reload-the-configuration-file-1">Reload the Configuration File</h4>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">docker <span class="nb">kill</span> --signal<span class="o">=</span>SIGHUP mosquitto
-<span class="c1"># OR</span>
+</code></pre></div><p>This should provide a log in the <code>mosquitto</code> container as following:</p><pre><code>mosquitto    | 1597864573: Reloading config.
+</code></pre><p>Tada! 👏👏👏 New publishing client <code>pubclient1</code> added!!</p><p>Use an MQTT Client to publish data to the broker with the new credentials.</p><h3 id=deleting-a-user-from-the-mqtt-broker>Deleting A User from the MQTT Broker</h3><p>Let&rsquo;s remove <code>pubclient1</code> from the <code>mosquitto/config/passwd</code> by executing the following:</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash>docker run -it --rm -v <span class=k>$(</span><span class=nb>pwd</span><span class=k>)</span>/mosquitto/config:/mosquitto/config/ eclipse-mosquitto  mosquitto_passwd -D /mosquitto/config/passwd pubclient1
+</code></pre></div><p>The <code>-D &lt;password_file> &lt;username_to_remove></code> will remove the username from the password file.</p><h4 id=reload-the-configuration-file-1>Reload the Configuration File</h4><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash>docker <span class=nb>kill</span> --signal<span class=o>=</span>SIGHUP mosquitto
+<span class=c1># OR</span>
 docker-compose -f docker-compose.prototype.yml -s SIGHUP mosquitto
-</code></pre></div><p>Will then remove the username from the MQTT Broker</p>
-<h2 id="conclusions">Conclusions</h2>
-<p>A bit of tweaking on the command line with <code>docker</code> and some documentation reading + a dash of StackOverflow resolved queries helped me overcome the worry I previously had for downtimes in the Stack.</p>
-<h2 id="future-works">Future Works</h2>
-<p>I aware of an <a href="https://github.com/jpmens/mosquitto-auth-plug" target="_blank" rel="noopener noreffer">Authentication Plugin on GitHub for Mosquitto which handles User Management via different Databases</a> but the repository is archived and there are so many forks to dapple with!</p>
-<blockquote>
-<p>However, I might look into creating a RESTful API for the User Management described above but I am still in doubt as to if it makes sense to actually issue Shell Commands via REST APIs, on servers which might get messy at times!</p>
-</blockquote>
-<p>If you have some thoughts on this idea, I would like to hear them. You can send me a message on my <strong>LinkedIn Profile</strong> anytime.</p></div><div class="post-footer" id="post-footer">
-    <div class="post-info">
-        <div class="post-info-line">
-            <div class="post-info-mod">
-                <span>Updated on 19-08-2020</span>
-            </div>
-            <div class="post-info-license"></div>
-        </div>
-        <div class="post-info-line">
-            <div class="post-info-md"></div>
-            <div class="post-info-share">
-                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://shantanoo-desai.github.io/posts/technology/nugget_mqtt_iot/" data-title="Nugget: User Management in MQTT Mosquitto Broker with Docker" data-hashtags="MQTT,IoT,Docker,docker-compose,User-Management"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://shantanoo-desai.github.io/posts/technology/nugget_mqtt_iot/" data-hashtag="MQTT"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="https://shantanoo-desai.github.io/posts/technology/nugget_mqtt_iot/"><i class="fab fa-linkedin fa-fw"></i></a><a href="javascript:void(0);" title="Share on WhatsApp" data-sharer="whatsapp" data-url="https://shantanoo-desai.github.io/posts/technology/nugget_mqtt_iot/" data-title="Nugget: User Management in MQTT Mosquitto Broker with Docker" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="https://shantanoo-desai.github.io/posts/technology/nugget_mqtt_iot/" data-title="Nugget: User Management in MQTT Mosquitto Broker with Docker"><i class="fab fa-hacker-news fa-fw"></i></a><a href="javascript:void(0);" title="Share on Reddit" data-sharer="reddit" data-url="https://shantanoo-desai.github.io/posts/technology/nugget_mqtt_iot/"><i class="fab fa-reddit fa-fw"></i></a></span>
-            </div>
-        </div>
-    </div>
-
-    <div class="post-info-more">
-        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/mqtt/">MQTT</a>,&nbsp;<a href="/tags/iot/">IoT</a>,&nbsp;<a href="/tags/docker/">Docker</a>,&nbsp;<a href="/tags/docker-compose/">docker-compose</a>,&nbsp;<a href="/tags/user-management/">User-Management</a></section>
-        <section>
-            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
-        </section>
-    </div>
-
-    <div class="post-nav"><a href="/posts/books/matar_hisham_the_return/" class="prev" rel="prev" title="The Return: Fathers, Sons and The Land In Between by Hisham Matar"><i class="fas fa-angle-left fa-fw"></i>The Return: Fathers, Sons and The Land In Between by Hisham Matar</a>
-            <a href="/posts/technology/questitto_light_stack_for_iot/" class="next" rel="next" title="Questitto: Light-weight, Blazing Fast Stack for your IoT Application">Questitto: Light-weight, Blazing Fast Stack for your IoT Application<i class="fas fa-angle-right fa-fw"></i></a></div>
-</div>
-</article></div>
-            </main><footer class="footer">
-        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.70.0">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
-                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2020</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank"></a></span></div>
-        </div>
-    </footer></div>
-
-        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
-                <i class="fas fa-arrow-up fa-fw"></i>
-            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
-                <i class="fas fa-comment fa-fw"></i>
-            </a>
-        </div><script type="text/javascript" src="/lib/smooth-scroll/smooth-scroll.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":20},"comment":{}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
-</html>
+</code></pre></div><p>Will then remove the username from the MQTT Broker</p><h2 id=conclusions>Conclusions</h2><p>A bit of tweaking on the command line with <code>docker</code> and some documentation reading + a dash of StackOverflow resolved queries helped me overcome the worry I previously had for downtimes in the Stack.</p><h2 id=future-works>Future Works</h2><p>I aware of an <a href=https://github.com/jpmens/mosquitto-auth-plug target=_blank rel="noopener noreffer">Authentication Plugin on GitHub for Mosquitto which handles User Management via different Databases</a> but the repository is archived and there are so many forks to dapple with!</p><blockquote><p>However, I might look into creating a RESTful API for the User Management described above but I am still in doubt as to if it makes sense to actually issue Shell Commands via REST APIs, on servers which might get messy at times!</p></blockquote><p>If you have some thoughts on this idea, I would like to hear them. You can send me a message on my <strong>LinkedIn Profile</strong> anytime.</p></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>Updated on 19-08-2020</span></div><div class=post-info-license></div></div><div class=post-info-line><div class=post-info-md></div><div class=post-info-share><span><a href=javascript:void(0); title="Share on Twitter" data-sharer=twitter data-url=https://shantanoo-desai.github.io/posts/technology/nugget_mqtt_iot/ data-title="Nugget: User Management in MQTT Mosquitto Broker with Docker" data-hashtags=MQTT,IoT,Docker,docker-compose,User-Management><i class="fab fa-twitter fa-fw"></i></a><a href=javascript:void(0); title="Share on Facebook" data-sharer=facebook data-url=https://shantanoo-desai.github.io/posts/technology/nugget_mqtt_iot/ data-hashtag=MQTT><i class="fab fa-facebook-square fa-fw"></i></a><a href=javascript:void(0); title="Share on Linkedin" data-sharer=linkedin data-url=https://shantanoo-desai.github.io/posts/technology/nugget_mqtt_iot/><i class="fab fa-linkedin fa-fw"></i></a><a href=javascript:void(0); title="Share on WhatsApp" data-sharer=whatsapp data-url=https://shantanoo-desai.github.io/posts/technology/nugget_mqtt_iot/ data-title="Nugget: User Management in MQTT Mosquitto Broker with Docker" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href=javascript:void(0); title="Share on Hacker News" data-sharer=hackernews data-url=https://shantanoo-desai.github.io/posts/technology/nugget_mqtt_iot/ data-title="Nugget: User Management in MQTT Mosquitto Broker with Docker"><i class="fab fa-hacker-news fa-fw"></i></a><a href=javascript:void(0); title="Share on Reddit" data-sharer=reddit data-url=https://shantanoo-desai.github.io/posts/technology/nugget_mqtt_iot/><i class="fab fa-reddit fa-fw"></i></a></span></div></div></div><div class=post-info-more><section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=/tags/mqtt/>MQTT</a>,&nbsp;<a href=/tags/iot/>IoT</a>,&nbsp;<a href=/tags/docker/>Docker</a>,&nbsp;<a href=/tags/docker-compose/>docker-compose</a>,&nbsp;<a href=/tags/user-management/>User-Management</a></section><section><span><a href=javascript:void(0); onclick=window.history.back();>Back</a></span>&nbsp;|&nbsp;<span><a href=/>Home</a></span></section></div><div class=post-nav><a href=/posts/books/matar_hisham_the_return/ class=prev rel=prev title="The Return: Fathers, Sons and The Land In Between by Hisham Matar"><i class="fas fa-angle-left fa-fw"></i>The Return: Fathers, Sons and The Land In Between by Hisham Matar</a>
+<a href=/posts/technology/questitto_light_stack_for_iot/ class=next rel=next title="Questitto: Light-weight, Blazing Fast Stack for your IoT Application">Questitto: Light-weight, Blazing Fast Stack for your IoT Application<i class="fas fa-angle-right fa-fw"></i></a></div></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line>Powered by <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.70.0">Hugo</a> | Theme - <a href=https://github.com/dillonzq/LoveIt target=_blank rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i>LoveIt</a></div><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2020</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank></a></span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top"><i class="fas fa-arrow-up fa-fw"></i></a><a href=# id=view-comments class=fixed-button title="View Comments"><i class="fas fa-comment fa-fw"></i></a></div><script type=text/javascript src=/lib/smooth-scroll/smooth-scroll.min.js></script><script type=text/javascript src=/lib/lazysizes/lazysizes.min.js></script><script type=text/javascript src=/lib/clipboard/clipboard.min.js></script><script type=text/javascript src=/lib/sharer/sharer.min.js></script><script type=text/javascript>window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":20},"comment":{}};</script><script type=text/javascript src=/js/theme.min.js></script></body></html>

@@ -1,14 +1,1 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
-    <channel>
-        <title>NestJS - Tag - Shan&#39;s Corner</title>
-        <link>https://shantanoo-desai.github.io/tags/nestjs/</link>
-        <description>NestJS - Tag - Shan&#39;s Corner</description>
-        <generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sat, 25 Apr 2020 18:00:00 &#43;0200</lastBuildDate><atom:link href="https://shantanoo-desai.github.io/tags/nestjs/" rel="self" type="application/rss+xml" /><item>
-    <title>CI/CD Notes: Nest.JS &#43; TravisCI &#43; Docker</title>
-    <link>https://shantanoo-desai.github.io/posts/technology/nestjs_travis_docker/</link>
-    <pubDate>Sat, 25 Apr 2020 18:00:00 &#43;0200</pubDate>
-    <author>Author</author>
-    <guid>https://shantanoo-desai.github.io/posts/technology/nestjs_travis_docker/</guid>
-    <description><![CDATA[A quick blog on how to make Travis CI push your App's Docker Image to Docker Hub after successful testing.]]></description>
-</item></channel>
-</rss>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>NestJS - Tag - Shan's Corner</title><link>https://shantanoo-desai.github.io/tags/nestjs/</link><description>NestJS - Tag - Shan's Corner</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sat, 25 Apr 2020 18:00:00 +0200</lastBuildDate><atom:link href="https://shantanoo-desai.github.io/tags/nestjs/" rel="self" type="application/rss+xml"/><item><title>CI/CD Notes: Nest.JS + TravisCI + Docker</title><link>https://shantanoo-desai.github.io/posts/technology/nestjs_travis_docker/</link><pubDate>Sat, 25 Apr 2020 18:00:00 +0200</pubDate><author>Author</author><guid>https://shantanoo-desai.github.io/posts/technology/nestjs_travis_docker/</guid><description>A quick blog on how to make Travis CI push your App's Docker Image to Docker Hub after successful testing.</description></item></channel></rss>

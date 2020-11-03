@@ -1,250 +1,65 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="robots" content="noodp" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
-        <title>Nugget: Enabling Persistence and Logging for your Mosquitto MQTT Broker Docker Container without Super User Privileges - Shan&#39;s Corner</title><meta name="Description" content="Save your Mosquitto Logs and Persistence Data from your Docker Container to Host Machine without `sudo`"><meta property="og:title" content="Nugget: Enabling Persistence and Logging for your Mosquitto MQTT Broker Docker Container without Super User Privileges" />
-<meta property="og:description" content="Save your Mosquitto Logs and Persistence Data from your Docker Container to Host Machine without `sudo`" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://shantanoo-desai.github.io/posts/technology/nugget_mosquitto_docker_persistence_without_sudo/" />
-<meta property="article:published_time" content="2020-09-10T22:25:58+02:00" />
-<meta property="article:modified_time" content="2020-09-10T22:25:58+02:00" />
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Nugget: Enabling Persistence and Logging for your Mosquitto MQTT Broker Docker Container without Super User Privileges"/>
-<meta name="twitter:description" content="Save your Mosquitto Logs and Persistence Data from your Docker Container to Host Machine without `sudo`"/>
-<meta name="application-name" content="Shan&#39;s World">
-<meta name="apple-mobile-web-app-title" content="Shan&#39;s World"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://shantanoo-desai.github.io/posts/technology/nugget_mosquitto_docker_persistence_without_sudo/" /><link rel="prev" href="https://shantanoo-desai.github.io/posts/technology/nugget_tags_fields_mgmt_with_telegraf_influxdb/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
-    {
-        "@context": "http://schema.org",
-        "@type": "BlogPosting",
-        "headline": "Nugget: Enabling Persistence and Logging for your Mosquitto MQTT Broker Docker Container without Super User Privileges",
-        "inLanguage": "en",
-        "mainEntityOfPage": {
-            "@type": "WebPage",
-            "@id": "https:\/\/shantanoo-desai.github.io\/posts\/technology\/nugget_mosquitto_docker_persistence_without_sudo\/"
-        },"genre": "posts","keywords": "MQTT, IoT, Docker, Docker-Compose, Mosquitto","wordcount":  451 ,
-        "url": "https:\/\/shantanoo-desai.github.io\/posts\/technology\/nugget_mosquitto_docker_persistence_without_sudo\/","datePublished": "2020-09-10T22:25:58+02:00","dateModified": "2020-09-10T22:25:58+02:00","publisher": {
-            "@type": "Organization",
-            "name": "Shan"},"author": {
-                "@type": "Person",
-                "name": "Shan"
-            },"description": "Save your Mosquitto Logs and Persistence Data from your Docker Container to Host Machine without `sudo`"
-    }
-    </script></head>
-    <body header-desktop="" header-mobile=""><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
-
-        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
-    <div class="header-wrapper">
-        <div class="header-title">
-            <a href="/" title="Shan&#39;s Corner">Shan&#39;s Corner</a>
-        </div>
-        <div class="menu">
-            <div class="menu-inner"><a class="menu-item" href="/posts/" title="My thoughts and works digitally transcribed"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/about/" title="Everything You wish to know about me"> About </a><span class="menu-item delimiter"></span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
-                    <i class="fas fa-adjust fa-fw"></i>
-                </a>
-            </div>
-        </div>
-    </div>
-</header><header class="mobile" id="header-mobile">
-    <div class="header-container">
-        <div class="header-wrapper">
-            <div class="header-title">
-                <a href="/" title="Shan&#39;s Corner">Shan&#39;s Corner</a>
-            </div>
-            <div class="menu-toggle" id="menu-toggle-mobile">
-                <span></span><span></span><span></span>
-            </div>
-        </div>
-        <div class="menu" id="menu-mobile"><a class="menu-item" href="/posts/" title="My thoughts and works digitally transcribed">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/about/" title="Everything You wish to know about me">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
-                <i class="fas fa-adjust fa-fw"></i>
-            </a></div>
-    </div>
-</header>
-<div class="search-dropdown desktop">
-    <div id="search-dropdown-desktop"></div>
-</div>
-<div class="search-dropdown mobile">
-    <div id="search-dropdown-mobile"></div>
-</div>
-<main class="main">
-                <div class="container"><div class="toc" id="toc-auto">
-            <h2 class="toc-title">Contents</h2>
-            <div class="toc-content" id="toc-content-auto"></div>
-        </div><article class="page single"><h1 class="single-title animated flipInX">Nugget: Enabling Persistence and Logging for your Mosquitto MQTT Broker Docker Container without Super User Privileges</h1><div class="post-meta">
-            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>Shan</a></span>&nbsp;<span class="post-category">included in <a href="/categories/technology/"><i class="far fa-folder fa-fw"></i>Technology</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="10-09-2020">10-09-2020</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;451 words&nbsp;
-                <i class="far fa-clock fa-fw"></i>&nbsp;3 minutes&nbsp;</div>
-        </div><div class="details toc" id="toc-static"  kept="">
-                <div class="details-summary toc-title">
-                    <span>Contents</span>
-                    <span><i class="details-icon fas fa-angle-right"></i></span>
-                </div>
-                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
-  <ul>
-    <li><a href="#overview">Overview</a></li>
-    <li><a href="#broker-deployment-with-docker">Broker Deployment with Docker</a>
-      <ul>
-        <li><a href="#errors-logs-for-mosquitto-broker">Errors Logs for Mosquitto Broker</a></li>
-      </ul>
-    </li>
-    <li><a href="#figure-the-ids-out">Figure the IDs out!</a>
-      <ul>
-        <li><a href="#solution">Solution</a></li>
-      </ul>
-    </li>
-    <li><a href="#final-compose-file">Final Compose file</a></li>
-    <li><a href="#conclusions">Conclusions</a></li>
-  </ul>
-</nav></div>
-            </div><div class="content" id="content"><h2 id="overview">Overview</h2>
-<p>At work I came across a problem where I needed to deploy a secure MQTT Mosquitto Broker on a server where I did not have
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><meta http-equiv=x-ua-compatible content="IE=edge, chrome=1"><title>Nugget: Enabling Persistence and Logging for your Mosquitto MQTT Broker Docker Container without Super User Privileges - Shan's Corner</title><meta name=Description content="Save your Mosquitto Logs and Persistence Data from your Docker Container to Host Machine without `sudo`"><meta property="og:title" content="Nugget: Enabling Persistence and Logging for your Mosquitto MQTT Broker Docker Container without Super User Privileges"><meta property="og:description" content="Save your Mosquitto Logs and Persistence Data from your Docker Container to Host Machine without `sudo`"><meta property="og:type" content="article"><meta property="og:url" content="https://shantanoo-desai.github.io/posts/technology/nugget_mosquitto_docker_persistence_without_sudo/"><meta property="article:published_time" content="2020-09-10T22:25:58+02:00"><meta property="article:modified_time" content="2020-09-10T22:25:58+02:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="Nugget: Enabling Persistence and Logging for your Mosquitto MQTT Broker Docker Container without Super User Privileges"><meta name=twitter:description content="Save your Mosquitto Logs and Persistence Data from your Docker Container to Host Machine without `sudo`"><meta name=application-name content="Shan's World"><meta name=apple-mobile-web-app-title content="Shan's World"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=manifest href=/site.webmanifest><link rel=canonical href=https://shantanoo-desai.github.io/posts/technology/nugget_mosquitto_docker_persistence_without_sudo/><link rel=prev href=https://shantanoo-desai.github.io/posts/technology/nugget_tags_fields_mgmt_with_telegraf_influxdb/><link rel=stylesheet href=/lib/normalize/normalize.min.css><link rel=stylesheet href=/css/style.min.css><link rel=stylesheet href=/lib/fontawesome-free/all.min.css><link rel=stylesheet href=/lib/animate/animate.min.css><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"Nugget: Enabling Persistence and Logging for your Mosquitto MQTT Broker Docker Container without Super User Privileges","inLanguage":"en","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/shantanoo-desai.github.io\/posts\/technology\/nugget_mosquitto_docker_persistence_without_sudo\/"},"genre":"posts","keywords":"MQTT, IoT, Docker, Docker-Compose, Mosquitto","wordcount":451,"url":"https:\/\/shantanoo-desai.github.io\/posts\/technology\/nugget_mosquitto_docker_persistence_without_sudo\/","datePublished":"2020-09-10T22:25:58+02:00","dateModified":"2020-09-10T22:25:58+02:00","publisher":{"@type":"Organization","name":"Shan"},"author":{"@type":"Person","name":"Shan"},"description":"Save your Mosquitto Logs and Persistence Data from your Docker Container to Host Machine without `sudo`"}</script></head><body header-desktop header-mobile><script type=text/javascript>(window.localStorage&&localStorage.getItem('theme')?localStorage.getItem('theme')==='dark':('auto'==='auto'?window.matchMedia('(prefers-color-scheme: dark)').matches:'auto'==='dark'))&&document.body.setAttribute('theme','dark');</script><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><div class=header-title><a href=/ title="Shan's Corner">Shan's Corner</a></div><div class=menu><div class=menu-inner><a class=menu-item href=/posts/ title="My thoughts and works digitally transcribed">Posts </a><a class=menu-item href=/tags/>Tags </a><a class=menu-item href=/categories/>Categories </a><a class=menu-item href=/about/ title="Everything You wish to know about me">About </a><span class="menu-item delimiter"></span><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme"><i class="fas fa-adjust fa-fw"></i></a></div></div></div></header><header class=mobile id=header-mobile><div class=header-container><div class=header-wrapper><div class=header-title><a href=/ title="Shan's Corner">Shan's Corner</a></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><div class=menu id=menu-mobile><a class=menu-item href=/posts/ title="My thoughts and works digitally transcribed">Posts</a><a class=menu-item href=/tags/>Tags</a><a class=menu-item href=/categories/>Categories</a><a class=menu-item href=/about/ title="Everything You wish to know about me">About</a><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
+<i class="fas fa-adjust fa-fw"></i></a></div></div></header><div class="search-dropdown desktop"><div id=search-dropdown-desktop></div></div><div class="search-dropdown mobile"><div id=search-dropdown-mobile></div></div><main class=main><div class=container><div class=toc id=toc-auto><h2 class=toc-title>Contents</h2><div class=toc-content id=toc-content-auto></div></div><article class="page single"><h1 class="single-title animated flipInX">Nugget: Enabling Persistence and Logging for your Mosquitto MQTT Broker Docker Container without Super User Privileges</h1><div class=post-meta><div class=post-meta-line><span class=post-author><a href=/ title=Author rel=author class=author><i class="fas fa-user-circle fa-fw"></i>Shan</a></span>&nbsp;<span class=post-category>included in <a href=/categories/technology/><i class="far fa-folder fa-fw"></i>Technology</a></span></div><div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=10-09-2020>10-09-2020</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;451 words&nbsp;
+<i class="far fa-clock fa-fw"></i>&nbsp;3 minutes&nbsp;</div></div><div class="details toc" id=toc-static kept><div class="details-summary toc-title"><span>Contents</span>
+<span><i class="details-icon fas fa-angle-right"></i></span></div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents><ul><li><a href=#overview>Overview</a></li><li><a href=#broker-deployment-with-docker>Broker Deployment with Docker</a><ul><li><a href=#errors-logs-for-mosquitto-broker>Errors Logs for Mosquitto Broker</a></li></ul></li><li><a href=#figure-the-ids-out>Figure the IDs out!</a><ul><li><a href=#solution>Solution</a></li></ul></li><li><a href=#final-compose-file>Final Compose file</a></li><li><a href=#conclusions>Conclusions</a></li></ul></nav></div></div><div class=content id=content><h2 id=overview>Overview</h2><p>At work I came across a problem where I needed to deploy a secure MQTT Mosquitto Broker on a server where I did not have
 <strong>Super User</strong> (<code>sudo</code>) privileges. The Mosquitto Broker&rsquo;s Docker Image <code>eclipse-mosquitto</code> has some <strong>Open Issues</strong> that
 where developers could not store the logs generated from the docker container on the host machine or store the persistent database
-from the container on the host machine without changing the directory ownerships for the logs and data.</p>
-<h2 id="broker-deployment-with-docker">Broker Deployment with Docker</h2>
-<div class="details admonition note open">
-        <div class="details-summary admonition-title">
-            <i class="icon fas fa-pencil-alt fa-fw"></i>Note<i class="details-icon fas fa-angle-right fa-fw"></i>
-        </div>
-        <div class="details-content">
-            <div class="admonition-content">If you want something out of the box, I created an open-source repository called <a href="https://github.com/shantanoo-desai/tiguitto" target="_blank" rel="noopener noreffer">tiguitto</a></div>
-        </div>
-    </div>
-<ol>
-<li>
-<p>I created <strong>Self-Signed Certificates</strong> for the server using <a href="https://github.com/shantanoo-desai/tiguitto/tree/master/selfsigned" target="_blank" rel="noopener noreffer">tiguitto/selfsigned case</a></p>
-</li>
-<li>
-<p>I created the following directory structure:</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">    <span class="p">|</span>- certs
-        <span class="p">|</span>- mqtt
-            <span class="p">|</span>- ca.crt
-            <span class="p">|</span>- mqtt-server.crt
-            <span class="p">|</span>- mqtt-server.key
-            <span class="p">|</span>- mqtt-client.crt
-            <span class="p">|</span>- mqtt-client.key
-    <span class="p">|</span>- mosquitto/
-        <span class="p">|</span>- config/
-            <span class="p">|</span>- mosquitto.conf
-        <span class="p">|</span>- logs/
-            <span class="p">|</span>- mosquitto.log
-        <span class="p">|</span>- data/
-    <span class="p">|</span>- docker-compose.yml
-</code></pre></div></li>
-<li>
-<p><code>docker-compose.yml</code> looks like:</p>
-<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="w">    </span><span class="k">version</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;3&#34;</span><span class="w">
-</span><span class="w">    </span><span class="k">service</span><span class="p">:</span><span class="w">
-</span><span class="w">    </span><span class="k">mosquitto</span><span class="p">:</span><span class="w">
-</span><span class="w">        </span><span class="k">image</span><span class="p">:</span><span class="w"> </span>eclipse-mosquitto<span class="w">
-</span><span class="w">        </span><span class="k">container_name</span><span class="p">:</span><span class="w"> </span>secure_mqtt_broker<span class="w">
-</span><span class="w">        </span><span class="k">volumes</span><span class="p">:</span><span class="w">
-</span><span class="w">            </span>- ./certs/mqtt<span class="p">:</span>/mosquitto/config/certs<span class="w">
-</span><span class="w">            </span>- ./mosquitto/config<span class="p">:</span>/mosquitto/config<span class="w">
-</span><span class="w">            </span>- ./mosquitto/log<span class="p">:</span>/mosquitto/log<span class="w">
-</span><span class="w">            </span>- ./mosquitto/data<span class="p">:</span>/mosquitto/data<span class="w">
-</span><span class="w">        </span><span class="k">restart</span><span class="p">:</span><span class="w"> </span>always<span class="w">
-</span><span class="w">        </span><span class="k">ports</span><span class="p">:</span><span class="w">
-</span><span class="w">            </span>- <span class="s2">&#34;8883:8883&#34;</span><span class="w">
-</span><span class="w">        </span><span class="k">network_mode</span><span class="p">:</span><span class="w"> </span>host<span class="w">
-</span></code></pre></div></li>
-</ol>
-<h3 id="errors-logs-for-mosquitto-broker">Errors Logs for Mosquitto Broker</h3>
-<p>Upon looking at logs using:</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">docker-compose logs -f 
-</code></pre></div><p>Logs:</p>
-<pre><code>1544689704: Error: Unable to open log file /mosquitto/logs/mosquitto.log for writing.
+from the container on the host machine without changing the directory ownerships for the logs and data.</p><h2 id=broker-deployment-with-docker>Broker Deployment with Docker</h2><div class="details admonition note open"><div class="details-summary admonition-title"><i class="icon fas fa-pencil-alt fa-fw"></i>Note<i class="details-icon fas fa-angle-right fa-fw"></i></div><div class=details-content><div class=admonition-content>If you want something out of the box, I created an open-source repository called <a href=https://github.com/shantanoo-desai/tiguitto target=_blank rel="noopener noreffer">tiguitto</a></div></div></div><ol><li><p>I created <strong>Self-Signed Certificates</strong> for the server using <a href=https://github.com/shantanoo-desai/tiguitto/tree/master/selfsigned target=_blank rel="noopener noreffer">tiguitto/selfsigned case</a></p></li><li><p>I created the following directory structure:</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash>    <span class=p>|</span>- certs
+        <span class=p>|</span>- mqtt
+            <span class=p>|</span>- ca.crt
+            <span class=p>|</span>- mqtt-server.crt
+            <span class=p>|</span>- mqtt-server.key
+            <span class=p>|</span>- mqtt-client.crt
+            <span class=p>|</span>- mqtt-client.key
+    <span class=p>|</span>- mosquitto/
+        <span class=p>|</span>- config/
+            <span class=p>|</span>- mosquitto.conf
+        <span class=p>|</span>- logs/
+            <span class=p>|</span>- mosquitto.log
+        <span class=p>|</span>- data/
+    <span class=p>|</span>- docker-compose.yml
+</code></pre></div></li><li><p><code>docker-compose.yml</code> looks like:</p><div class=highlight><pre class=chroma><code class=language-yaml data-lang=yaml><span class=w>    </span><span class=k>version</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;3&#34;</span><span class=w>
+</span><span class=w>    </span><span class=k>service</span><span class=p>:</span><span class=w>
+</span><span class=w>    </span><span class=k>mosquitto</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span><span class=k>image</span><span class=p>:</span><span class=w> </span>eclipse-mosquitto<span class=w>
+</span><span class=w>        </span><span class=k>container_name</span><span class=p>:</span><span class=w> </span>secure_mqtt_broker<span class=w>
+</span><span class=w>        </span><span class=k>volumes</span><span class=p>:</span><span class=w>
+</span><span class=w>            </span>- ./certs/mqtt<span class=p>:</span>/mosquitto/config/certs<span class=w>
+</span><span class=w>            </span>- ./mosquitto/config<span class=p>:</span>/mosquitto/config<span class=w>
+</span><span class=w>            </span>- ./mosquitto/log<span class=p>:</span>/mosquitto/log<span class=w>
+</span><span class=w>            </span>- ./mosquitto/data<span class=p>:</span>/mosquitto/data<span class=w>
+</span><span class=w>        </span><span class=k>restart</span><span class=p>:</span><span class=w> </span>always<span class=w>
+</span><span class=w>        </span><span class=k>ports</span><span class=p>:</span><span class=w>
+</span><span class=w>            </span>- <span class=s2>&#34;8883:8883&#34;</span><span class=w>
+</span><span class=w>        </span><span class=k>network_mode</span><span class=p>:</span><span class=w> </span>host<span class=w>
+</span></code></pre></div></li></ol><h3 id=errors-logs-for-mosquitto-broker>Errors Logs for Mosquitto Broker</h3><p>Upon looking at logs using:</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash>docker-compose logs -f 
+</code></pre></div><p>Logs:</p><pre><code>1544689704: Error: Unable to open log file /mosquitto/logs/mosquitto.log for writing.
 1544689704: Error: Unable to open log file /mosquitto/logs/mosquitto.log for writing.
 1552421249: Saving in-memory database to /mosquitto/data/mosquitto.db.
 1552421249: Error saving in-memory database, unable to open /mosquitto/data/mosquitto.db.new for writing.
 1552421249: Error: Permission denied.
-</code></pre>
-<p>If I had <code>sudo</code> privileges the problem would be solved using:</p>
-<pre><code>    sudo chown -R 1883:1883 mosquitto/logs/
+</code></pre><p>If I had <code>sudo</code> privileges the problem would be solved using:</p><pre><code>    sudo chown -R 1883:1883 mosquitto/logs/
     sudo chown -R 1883:1883 mosquitto/data/
-</code></pre><h2 id="figure-the-ids-out">Figure the IDs out!</h2>
-<p>The container&rsquo;s User ID is <code>docker</code> and the directories and files had the user ID of my account on the server. Since the
+</code></pre><h2 id=figure-the-ids-out>Figure the IDs out!</h2><p>The container&rsquo;s User ID is <code>docker</code> and the directories and files had the user ID of my account on the server. Since the
 ownership IDs are completely different, the permissions to write to the <code>mosquitto.log</code> file as well the <code>mosquitto/data</code> directory
-aren&rsquo;t possible!</p>
-<h3 id="solution">Solution</h3>
-<ul>
-<li>
-<p>Find out the User <code>UID</code> and Group ID <code>GID</code> (Group ID)</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ id -u
-</code></pre></div><p>OR</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ id -g
-</code></pre></div></li>
-<li>
-<p>For me the my account had the <code>uid</code> of <code>1002</code></p>
-</li>
-<li>
-<p>Add: <code>user: &quot;1002:1002&quot;</code> to the <code>docker-compose.yml</code> file and restart your container</p>
-</li>
-</ul>
-<p>The error vanished and I am now able to check the logs on the host and the persistence is stored under <code>mosquitto/data/mosquitto.new.db</code></p>
-<h2 id="final-compose-file">Final Compose file</h2>
-<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="w">    </span><span class="k">version</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;3&#34;</span><span class="w">
-</span><span class="w">    </span><span class="k">service</span><span class="p">:</span><span class="w">
-</span><span class="w">    </span><span class="k">mosquitto</span><span class="p">:</span><span class="w">
-</span><span class="w">        </span><span class="k">image</span><span class="p">:</span><span class="w"> </span>eclipse-mosquitto<span class="w">
-</span><span class="w">        </span><span class="k">container_name</span><span class="p">:</span><span class="w"> </span>secure_mqtt_broker<span class="w">
-</span><span class="w">        </span><span class="k">user</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;1002:1002&#34;</span><span class="w">
-</span><span class="w">        </span><span class="k">volumes</span><span class="p">:</span><span class="w">
-</span><span class="w">            </span>- ./certs/mqtt<span class="p">:</span>/mosquitto/config/certs<span class="w">
-</span><span class="w">            </span>- ./mosquitto/config<span class="p">:</span>/mosquitto/config<span class="w">
-</span><span class="w">            </span>- ./mosquitto/log<span class="p">:</span>/mosquitto/log<span class="w">
-</span><span class="w">            </span>- ./mosquitto/data<span class="p">:</span>/mosquitto/data<span class="w">
-</span><span class="w">        </span><span class="k">ports</span><span class="p">:</span><span class="w">
-</span><span class="w">            </span>- <span class="s2">&#34;8883:8883&#34;</span><span class="w">
-</span><span class="w">        </span><span class="k">restart</span><span class="p">:</span><span class="w"> </span>always<span class="w">
-</span><span class="w">        </span><span class="k">network_mode</span><span class="p">:</span><span class="w"> </span>host<span class="w">
-</span></code></pre></div><p>You can also pass the User ID and Group ID as Environment Variables as follows:</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ <span class="nv">UID</span><span class="o">=</span><span class="k">$(</span>id -u<span class="k">)</span> <span class="nv">GID</span><span class="o">=</span><span class="k">$(</span>id -g<span class="k">)</span> docker-compose -f docker-compose.yml up
-</code></pre></div><p>and make sure to change the <code>user</code> key as follows in your <code>docker-compose.yml</code> file: <code>user: ${UID}:${GID}</code></p>
-<h2 id="conclusions">Conclusions</h2>
-<p>I went through the <a href="https://github.com/eclipse/mosquitto/issues/1078" target="_blank" rel="noopener noreffer">Open Issue 1078 for Eclipse Mosquitto GitHub Repository</a> and figured the solution out.
+aren&rsquo;t possible!</p><h3 id=solution>Solution</h3><ul><li><p>Find out the User <code>UID</code> and Group ID <code>GID</code> (Group ID)</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash>$ id -u
+</code></pre></div><p>OR</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash>$ id -g
+</code></pre></div></li><li><p>For me the my account had the <code>uid</code> of <code>1002</code></p></li><li><p>Add: <code>user: "1002:1002"</code> to the <code>docker-compose.yml</code> file and restart your container</p></li></ul><p>The error vanished and I am now able to check the logs on the host and the persistence is stored under <code>mosquitto/data/mosquitto.new.db</code></p><h2 id=final-compose-file>Final Compose file</h2><div class=highlight><pre class=chroma><code class=language-yaml data-lang=yaml><span class=w>    </span><span class=k>version</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;3&#34;</span><span class=w>
+</span><span class=w>    </span><span class=k>service</span><span class=p>:</span><span class=w>
+</span><span class=w>    </span><span class=k>mosquitto</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span><span class=k>image</span><span class=p>:</span><span class=w> </span>eclipse-mosquitto<span class=w>
+</span><span class=w>        </span><span class=k>container_name</span><span class=p>:</span><span class=w> </span>secure_mqtt_broker<span class=w>
+</span><span class=w>        </span><span class=k>user</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;1002:1002&#34;</span><span class=w>
+</span><span class=w>        </span><span class=k>volumes</span><span class=p>:</span><span class=w>
+</span><span class=w>            </span>- ./certs/mqtt<span class=p>:</span>/mosquitto/config/certs<span class=w>
+</span><span class=w>            </span>- ./mosquitto/config<span class=p>:</span>/mosquitto/config<span class=w>
+</span><span class=w>            </span>- ./mosquitto/log<span class=p>:</span>/mosquitto/log<span class=w>
+</span><span class=w>            </span>- ./mosquitto/data<span class=p>:</span>/mosquitto/data<span class=w>
+</span><span class=w>        </span><span class=k>ports</span><span class=p>:</span><span class=w>
+</span><span class=w>            </span>- <span class=s2>&#34;8883:8883&#34;</span><span class=w>
+</span><span class=w>        </span><span class=k>restart</span><span class=p>:</span><span class=w> </span>always<span class=w>
+</span><span class=w>        </span><span class=k>network_mode</span><span class=p>:</span><span class=w> </span>host<span class=w>
+</span></code></pre></div><p>You can also pass the User ID and Group ID as Environment Variables as follows:</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash>$ <span class=nv>UID</span><span class=o>=</span><span class=k>$(</span>id -u<span class=k>)</span> <span class=nv>GID</span><span class=o>=</span><span class=k>$(</span>id -g<span class=k>)</span> docker-compose -f docker-compose.yml up
+</code></pre></div><p>and make sure to change the <code>user</code> key as follows in your <code>docker-compose.yml</code> file: <code>user: ${UID}:${GID}</code></p><h2 id=conclusions>Conclusions</h2><p>I went through the <a href=https://github.com/eclipse/mosquitto/issues/1078 target=_blank rel="noopener noreffer">Open Issue 1078 for Eclipse Mosquitto GitHub Repository</a> and figured the solution out.
 With a little trial and error on the <code>UID</code> and <code>GID</code> with the <code>user</code> key-value pair in the <code>docker-compose.yml</code> makes it possible
-to avoid <code>sudo</code> usage!</p>
-<p>If you have more thoughts, improvements and criticisms then connect with me or send me an E-mail or a <strong>LinkedIn Message</strong> anytime!</p></div><div class="post-footer" id="post-footer">
-    <div class="post-info">
-        <div class="post-info-line">
-            <div class="post-info-mod">
-                <span>Updated on 10-09-2020</span>
-            </div>
-            <div class="post-info-license"></div>
-        </div>
-        <div class="post-info-line">
-            <div class="post-info-md"></div>
-            <div class="post-info-share">
-                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://shantanoo-desai.github.io/posts/technology/nugget_mosquitto_docker_persistence_without_sudo/" data-title="Nugget: Enabling Persistence and Logging for your Mosquitto MQTT Broker Docker Container without Super User Privileges" data-hashtags="MQTT,IoT,Docker,Docker-Compose,Mosquitto"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://shantanoo-desai.github.io/posts/technology/nugget_mosquitto_docker_persistence_without_sudo/" data-hashtag="MQTT"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="https://shantanoo-desai.github.io/posts/technology/nugget_mosquitto_docker_persistence_without_sudo/"><i class="fab fa-linkedin fa-fw"></i></a><a href="javascript:void(0);" title="Share on WhatsApp" data-sharer="whatsapp" data-url="https://shantanoo-desai.github.io/posts/technology/nugget_mosquitto_docker_persistence_without_sudo/" data-title="Nugget: Enabling Persistence and Logging for your Mosquitto MQTT Broker Docker Container without Super User Privileges" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="https://shantanoo-desai.github.io/posts/technology/nugget_mosquitto_docker_persistence_without_sudo/" data-title="Nugget: Enabling Persistence and Logging for your Mosquitto MQTT Broker Docker Container without Super User Privileges"><i class="fab fa-hacker-news fa-fw"></i></a><a href="javascript:void(0);" title="Share on Reddit" data-sharer="reddit" data-url="https://shantanoo-desai.github.io/posts/technology/nugget_mosquitto_docker_persistence_without_sudo/"><i class="fab fa-reddit fa-fw"></i></a></span>
-            </div>
-        </div>
-    </div>
-
-    <div class="post-info-more">
-        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/mqtt/">MQTT</a>,&nbsp;<a href="/tags/iot/">IoT</a>,&nbsp;<a href="/tags/docker/">Docker</a>,&nbsp;<a href="/tags/docker-compose/">docker-compose</a>,&nbsp;<a href="/tags/mosquitto/">Mosquitto</a></section>
-        <section>
-            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
-        </section>
-    </div>
-
-    <div class="post-nav"><a href="/posts/technology/nugget_tags_fields_mgmt_with_telegraf_influxdb/" class="prev" rel="prev" title="Nugget: Let Telegraf manage your InfluxDB Fields and Tags for you"><i class="fas fa-angle-left fa-fw"></i>Nugget: Let Telegraf manage your InfluxDB Fields and Tags for you</a></div>
-</div>
-</article></div>
-            </main><footer class="footer">
-        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.70.0">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
-                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2020</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank"></a></span></div>
-        </div>
-    </footer></div>
-
-        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
-                <i class="fas fa-arrow-up fa-fw"></i>
-            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
-                <i class="fas fa-comment fa-fw"></i>
-            </a>
-        </div><script type="text/javascript" src="/lib/smooth-scroll/smooth-scroll.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":20},"comment":{}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
-</html>
+to avoid <code>sudo</code> usage!</p><p>If you have more thoughts, improvements and criticisms then connect with me or send me an E-mail or a <strong>LinkedIn Message</strong> anytime!</p></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>Updated on 10-09-2020</span></div><div class=post-info-license></div></div><div class=post-info-line><div class=post-info-md></div><div class=post-info-share><span><a href=javascript:void(0); title="Share on Twitter" data-sharer=twitter data-url=https://shantanoo-desai.github.io/posts/technology/nugget_mosquitto_docker_persistence_without_sudo/ data-title="Nugget: Enabling Persistence and Logging for your Mosquitto MQTT Broker Docker Container without Super User Privileges" data-hashtags=MQTT,IoT,Docker,Docker-Compose,Mosquitto><i class="fab fa-twitter fa-fw"></i></a><a href=javascript:void(0); title="Share on Facebook" data-sharer=facebook data-url=https://shantanoo-desai.github.io/posts/technology/nugget_mosquitto_docker_persistence_without_sudo/ data-hashtag=MQTT><i class="fab fa-facebook-square fa-fw"></i></a><a href=javascript:void(0); title="Share on Linkedin" data-sharer=linkedin data-url=https://shantanoo-desai.github.io/posts/technology/nugget_mosquitto_docker_persistence_without_sudo/><i class="fab fa-linkedin fa-fw"></i></a><a href=javascript:void(0); title="Share on WhatsApp" data-sharer=whatsapp data-url=https://shantanoo-desai.github.io/posts/technology/nugget_mosquitto_docker_persistence_without_sudo/ data-title="Nugget: Enabling Persistence and Logging for your Mosquitto MQTT Broker Docker Container without Super User Privileges" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href=javascript:void(0); title="Share on Hacker News" data-sharer=hackernews data-url=https://shantanoo-desai.github.io/posts/technology/nugget_mosquitto_docker_persistence_without_sudo/ data-title="Nugget: Enabling Persistence and Logging for your Mosquitto MQTT Broker Docker Container without Super User Privileges"><i class="fab fa-hacker-news fa-fw"></i></a><a href=javascript:void(0); title="Share on Reddit" data-sharer=reddit data-url=https://shantanoo-desai.github.io/posts/technology/nugget_mosquitto_docker_persistence_without_sudo/><i class="fab fa-reddit fa-fw"></i></a></span></div></div></div><div class=post-info-more><section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=/tags/mqtt/>MQTT</a>,&nbsp;<a href=/tags/iot/>IoT</a>,&nbsp;<a href=/tags/docker/>Docker</a>,&nbsp;<a href=/tags/docker-compose/>docker-compose</a>,&nbsp;<a href=/tags/mosquitto/>Mosquitto</a></section><section><span><a href=javascript:void(0); onclick=window.history.back();>Back</a></span>&nbsp;|&nbsp;<span><a href=/>Home</a></span></section></div><div class=post-nav><a href=/posts/technology/nugget_tags_fields_mgmt_with_telegraf_influxdb/ class=prev rel=prev title="Nugget: Let Telegraf manage your InfluxDB Fields and Tags for you"><i class="fas fa-angle-left fa-fw"></i>Nugget: Let Telegraf manage your InfluxDB Fields and Tags for you</a></div></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line>Powered by <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.70.0">Hugo</a> | Theme - <a href=https://github.com/dillonzq/LoveIt target=_blank rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i>LoveIt</a></div><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2020</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank></a></span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top"><i class="fas fa-arrow-up fa-fw"></i></a><a href=# id=view-comments class=fixed-button title="View Comments"><i class="fas fa-comment fa-fw"></i></a></div><script type=text/javascript src=/lib/smooth-scroll/smooth-scroll.min.js></script><script type=text/javascript src=/lib/lazysizes/lazysizes.min.js></script><script type=text/javascript src=/lib/clipboard/clipboard.min.js></script><script type=text/javascript src=/lib/sharer/sharer.min.js></script><script type=text/javascript>window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":20},"comment":{}};</script><script type=text/javascript src=/js/theme.min.js></script></body></html>

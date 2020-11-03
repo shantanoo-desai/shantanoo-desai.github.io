@@ -1,14 +1,1 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
-    <channel>
-        <title>Mosquitto - Tag - Shan&#39;s Corner</title>
-        <link>https://shantanoo-desai.github.io/tags/mosquitto/</link>
-        <description>Mosquitto - Tag - Shan&#39;s Corner</description>
-        <generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Thu, 10 Sep 2020 22:25:58 &#43;0200</lastBuildDate><atom:link href="https://shantanoo-desai.github.io/tags/mosquitto/" rel="self" type="application/rss+xml" /><item>
-    <title>Nugget: Enabling Persistence and Logging for your Mosquitto MQTT Broker Docker Container without Super User Privileges</title>
-    <link>https://shantanoo-desai.github.io/posts/technology/nugget_mosquitto_docker_persistence_without_sudo/</link>
-    <pubDate>Thu, 10 Sep 2020 22:25:58 &#43;0200</pubDate>
-    <author>Author</author>
-    <guid>https://shantanoo-desai.github.io/posts/technology/nugget_mosquitto_docker_persistence_without_sudo/</guid>
-    <description><![CDATA[Save your Mosquitto Logs and Persistence Data from your Docker Container to Host Machine without `sudo`]]></description>
-</item></channel>
-</rss>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Mosquitto - Tag - Shan's Corner</title><link>https://shantanoo-desai.github.io/tags/mosquitto/</link><description>Mosquitto - Tag - Shan's Corner</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Thu, 10 Sep 2020 22:25:58 +0200</lastBuildDate><atom:link href="https://shantanoo-desai.github.io/tags/mosquitto/" rel="self" type="application/rss+xml"/><item><title>Nugget: Enabling Persistence and Logging for your Mosquitto MQTT Broker Docker Container without Super User Privileges</title><link>https://shantanoo-desai.github.io/posts/technology/nugget_mosquitto_docker_persistence_without_sudo/</link><pubDate>Thu, 10 Sep 2020 22:25:58 +0200</pubDate><author>Author</author><guid>https://shantanoo-desai.github.io/posts/technology/nugget_mosquitto_docker_persistence_without_sudo/</guid><description>Save your Mosquitto Logs and Persistence Data from your Docker Container to Host Machine without `sudo`</description></item></channel></rss>

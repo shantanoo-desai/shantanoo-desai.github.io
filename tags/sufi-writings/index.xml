@@ -1,14 +1,1 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
-    <channel>
-        <title>Sufi Writings - Tag - Shan&#39;s Corner</title>
-        <link>https://shantanoo-desai.github.io/tags/sufi-writings/</link>
-        <description>Sufi Writings - Tag - Shan&#39;s Corner</description>
-        <generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Tue, 19 May 2020 11:26:40 &#43;0200</lastBuildDate><atom:link href="https://shantanoo-desai.github.io/tags/sufi-writings/" rel="self" type="application/rss+xml" /><item>
-    <title>Parable: This Too Shall Pass</title>
-    <link>https://shantanoo-desai.github.io/posts/quotes/sufi_parable/</link>
-    <pubDate>Tue, 19 May 2020 11:26:40 &#43;0200</pubDate>
-    <author>Author</author>
-    <guid>https://shantanoo-desai.github.io/posts/quotes/sufi_parable/</guid>
-    <description><![CDATA[A parable that keeps one go through thick and thin.]]></description>
-</item></channel>
-</rss>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Sufi Writings - Tag - Shan's Corner</title><link>https://shantanoo-desai.github.io/tags/sufi-writings/</link><description>Sufi Writings - Tag - Shan's Corner</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Tue, 19 May 2020 11:26:40 +0200</lastBuildDate><atom:link href="https://shantanoo-desai.github.io/tags/sufi-writings/" rel="self" type="application/rss+xml"/><item><title>Parable: This Too Shall Pass</title><link>https://shantanoo-desai.github.io/posts/quotes/sufi_parable/</link><pubDate>Tue, 19 May 2020 11:26:40 +0200</pubDate><author>Author</author><guid>https://shantanoo-desai.github.io/posts/quotes/sufi_parable/</guid><description>A parable that keeps one go through thick and thin.</description></item></channel></rss>
