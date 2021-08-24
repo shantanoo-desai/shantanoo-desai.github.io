@@ -1,0 +1,215 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><meta http-equiv=x-ua-compatible content="IE=edge, chrome=1"><title>Deploy an nginx app with LF-Edge's EVE on a Raspberry Pi 4 - Part 3 - Shan's Corner</title><meta name=Description content="Shan's World"><meta property="og:title" content="Deploy an nginx app with LF-Edge's EVE on a Raspberry Pi 4 - Part 3"><meta property="og:description" content><meta property="og:type" content="article"><meta property="og:url" content="https://shantanoo-desai.github.io/posts/technology/eve-eden-rpi4-nginx/"><meta property="article:published_time" content="2021-08-24T19:13:00+02:00"><meta property="article:modified_time" content="2021-08-24T19:13:00+02:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="Deploy an nginx app with LF-Edge's EVE on a Raspberry Pi 4 - Part 3"><meta name=twitter:description content><meta name=application-name content="Shan's World"><meta name=apple-mobile-web-app-title content="Shan's World"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=manifest href=/site.webmanifest><link rel=canonical href=https://shantanoo-desai.github.io/posts/technology/eve-eden-rpi4-nginx/><link rel=prev href=https://shantanoo-desai.github.io/posts/technology/lf-edge-eden-qemu-telegraf-part-2/><link rel=stylesheet href=/lib/normalize/normalize.min.css><link rel=stylesheet href=/css/style.min.css><link rel=stylesheet href=/lib/fontawesome-free/all.min.css><link rel=stylesheet href=/lib/animate/animate.min.css><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"Deploy an nginx app with LF-Edge's EVE on a Raspberry Pi 4 - Part 3","inLanguage":"en","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/shantanoo-desai.github.io\/posts\/technology\/eve-eden-rpi4-nginx\/"},"genre":"posts","keywords":"Edge Computing, Open-Source, Edge Cluster Orchestration, IoT Deployment, IoT, Linux Foundation Projects","wordcount":1774,"url":"https:\/\/shantanoo-desai.github.io\/posts\/technology\/eve-eden-rpi4-nginx\/","datePublished":"2021-08-24T19:13:00+02:00","dateModified":"2021-08-24T19:13:00+02:00","publisher":{"@type":"Organization","name":"Shan"},"author":{"@type":"Person","name":"Shan"},"description":""}</script></head><body header-desktop header-mobile><script type=text/javascript>(window.localStorage&&localStorage.getItem('theme')?localStorage.getItem('theme')==='dark':('auto'==='auto'?window.matchMedia('(prefers-color-scheme: dark)').matches:'auto'==='dark'))&&document.body.setAttribute('theme','dark');</script><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><div class=header-title><a href=/ title="Shan's Corner">Shan's Corner</a></div><div class=menu><div class=menu-inner><a class=menu-item href=/posts/ title="My thoughts and works digitally transcribed">Posts </a><a class=menu-item href=/tags/>Tags </a><a class=menu-item href=/about/ title="Everything You wish to know about me">About </a><a class=menu-item href=/categories/>Categories </a><span class="menu-item delimiter"></span><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme"><i class="fas fa-adjust fa-fw"></i></a></div></div></div></header><header class=mobile id=header-mobile><div class=header-container><div class=header-wrapper><div class=header-title><a href=/ title="Shan's Corner">Shan's Corner</a></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><div class=menu id=menu-mobile><a class=menu-item href=/posts/ title="My thoughts and works digitally transcribed">Posts</a><a class=menu-item href=/tags/>Tags</a><a class=menu-item href=/about/ title="Everything You wish to know about me">About</a><a class=menu-item href=/categories/>Categories</a><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
+<i class="fas fa-adjust fa-fw"></i></a></div></div></header><div class="search-dropdown desktop"><div id=search-dropdown-desktop></div></div><div class="search-dropdown mobile"><div id=search-dropdown-mobile></div></div><main class=main><div class=container><div class=toc id=toc-auto><h2 class=toc-title>Contents</h2><div class=toc-content id=toc-content-auto></div></div><article class="page single"><h1 class="single-title animated flipInX">Deploy an nginx app with LF-Edge's EVE on a Raspberry Pi 4 - Part 3</h1><div class=post-meta><div class=post-meta-line><span class=post-author><a href=/ title=Author rel=author class=author><i class="fas fa-user-circle fa-fw"></i>Shan</a></span>&nbsp;<span class=post-category>included in <a href=/categories/technology/><i class="far fa-folder fa-fw"></i>Technology</a></span></div><div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=24-08-2021>24-08-2021</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;1774 words&nbsp;
+<i class="far fa-clock fa-fw"></i>&nbsp;9 minutes&nbsp;</div></div><div class="details toc" id=toc-static kept><div class="details-summary toc-title"><span>Contents</span>
+<span><i class="details-icon fas fa-angle-right"></i></span></div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents><ul><li><a href=#goal>Goal</a></li><li><a href=#requirements>Requirements</a><ul><li><a href=#hardware>Hardware</a></li><li><a href=#software>Software</a></li></ul></li><li><a href=#lets-make-our-raspberry-pi-4-as-an-eve-device>Let&rsquo;s Make our Raspberry Pi 4 as an EVE device</a><ul><li><a href=#on-boarding-our-raspberry-pi-4>On-Boarding our Raspberry Pi 4</a></li></ul></li><li><a href=#deploying-an-nginx-app>Deploying an <code>nginx</code> app</a><ul><li><a href=#testing-the-app>Testing the App</a></li><li><a href=#accessing-our-eve-device>Accessing our EVE Device</a></li></ul></li><li><a href=#clean-up>Clean Up</a></li></ul></nav></div></div><div class=content id=content><h1 id=setting-up-a-raspberry-pi-4-as-an-eve-device-and-deploying-an-nginx-app>Setting Up a Raspberry Pi 4 as an EVE Device and Deploying an <code>nginx</code> App</h1><p>If you haven&rsquo;t gone through the previous posts on trying EVE-OS with QEMU go check
+them out first in order to understand what it might feel like working with EVE devices
+along with <code>eden</code> and <code>adam</code></p><p>If you have already gone through it, we will now actually take the QEMU stuff on an
+actual Edge Device i.e., <strong>Raspberry Pi 4 Model B</strong></p><h2 id=goal>Goal</h2><p>We want to deploy a simple <code>nginx</code> from our Host machine to an EVE device (RPi4) over a
+network.</p><p>This tutorial expects that the Host machine and the EVE device will be on the same network
+for sake of simplicity.</p><p>We will also setup a single RPi4 as an EVE device. In the future we will deploy a cluster of
+EVE Devices</p><h2 id=requirements>Requirements</h2><p>Things you might need to follow along</p><h3 id=hardware>Hardware</h3><table><thead><tr><th>Hardware</th><th>Quantity</th></tr></thead><tbody><tr><td><strong>Raspberry Pi 4 Model B 4GB RAM</strong></td><td>1</td></tr><tr><td><strong>Micro SD Card 16GB</strong></td><td>1</td></tr><tr><td><strong>WLAN Router</strong> (optional)</td><td>1</td></tr><tr><td><strong>Ethernet RJ-45 Cable</strong></td><td>1</td></tr><tr><td><strong>USB-C Power Adapter for Pi w/ O/P 5V/3A</strong></td><td>1</td></tr></tbody></table><h3 id=software>Software</h3><p>If your Host machine isn&rsquo;t setup for EVE-OS, go through the <code>00-Eve-Eden-Local-QEMU.md</code> tutorial
+to install the required software and dependencies.</p><h2 id=lets-make-our-raspberry-pi-4-as-an-eve-device>Let&rsquo;s Make our Raspberry Pi 4 as an EVE device</h2><p>We will begin by making a fresh start with <code>eden</code>. If you haven&rsquo;t cloned the
+<a href=https://github.com/lf-edge/eden target=_blank rel="noopener noreffer"><code>eden</code> repo</a> on your machine then please go ahead and do that.</p><ol><li><p>Clean up initially</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash>    <span class=nb>cd</span> ~/eden <span class=o>&amp;&amp;</span> make clean
+</code></pre></div><p>You will see similar logs as these:</p><pre><code>configFile:  /home/shantanoo/.eden/contexts/default.yml
+INFO[0000] Config file generated: /home/shantanoo/.eden/contexts/default.yml 
+DEBU[0000] Will use config from /home/shantanoo/.eden/contexts/default.yml 
+DEBU[0000] Try to add config from /home/shantanoo/Development/github.com/lf-edge/eden/eden-config.yml 
+INFO[0000] Config file already exists /home/shantanoo/.eden/contexts/default.yml 
+DEBU[0000] Will use config from /home/shantanoo/.eden/contexts/default.yml 
+DEBU[0000] Try to add config from /home/shantanoo/Development/github.com/lf-edge/eden/eden-config.yml 
+dist/bin/eden-linux-amd64 stop -v &quot;debug&quot;
+configName:  default
+configFile:  /home/shantanoo/.eden/contexts/default.yml
+DEBU[0000] Will use config from /home/shantanoo/.eden/contexts/default.yml 
+DEBU[0000] Try to add config from /home/shantanoo/Development/github.com/lf-edge/eden/eden-config.yml 
+INFO[0000] adam stopped                                 
+INFO[0000] redis stopped                                
+INFO[0000] registry stopped                             
+INFO[0000] eserver stopped                              
+INFO[0000] cannot stop EVE: cannot open pid file 
+/home/shantanoo/Development/github.com/lf-edge/eden/dist/default-eve.pid: 
+    open /home/shantanoo/Development/github.com/lf-edge/eden/dist/default-eve.pid: no such file or directory 
+
+....
+
+INFO[0000] cannot stop adam: StopAdam: error in rm adam container: container not found 
+INFO[0000] cannot stop redis: StopRedis: error in rm redis container: container not found 
+INFO[0000] cannot stop registry: StopRegistry: error in rm registry container: container not found 
+INFO[0000] cannot stop eserver: StopEServer: error in rm eserver container: container not found 
+INFO[0000] cannot stop EVE: 
+    cannot open pid file /home/shantanoo/Development/github.com/lf-edge/eden/dist/default-eve.pid: 
+    open /home/shantanoo/Development/github.com/lf-edge/eden/dist/default-eve.pid: no such file or directory 
+INFO[0000] CleanEden done                               
+rm -rf dist/bin/eden-linux-amd64 dist/bin/eden  /home/shantanoo/Development/github.com/lf-edge/eden/dist
+</code></pre><p>The build system will search for a default configuration YAML file in <code>~/.eden/</code> directory and stop any running
+components of the EVE-OS ecosystem. If these components aren&rsquo;t running it will mention that they are not found.</p></li><li><p>Let&rsquo;s build <code>eden</code></p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash>make build
+</code></pre></div><p>This should build an <code>eden</code> CLI executable in the root of the directory</p></li><li><p>Add device configuration for Raspberry Pi 4</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash>./eden config add default --devmodel RPi4
+</code></pre></div><p>This should add <code>devmodel</code> key your default configuration file <code>~/.eden/contexts/default.yml</code>. A snippet of the
+<code>default.yml</code> file with our <code>devmodel</code> configuration is below:</p><div class=highlight><pre class=chroma><code class=language-yaml data-lang=yaml><span class=c># File ~/.eden/contexts/default.yml</span><span class=w>
+</span><span class=w>
+</span><span class=w></span><span class=c># .. removed other configurations for brevity</span><span class=w>
+</span><span class=w></span><span class=k>eve</span><span class=p>:</span><span class=w>
+</span><span class=w></span><span class=c>#name</span><span class=w>
+</span><span class=w></span><span class=k>name</span><span class=p>:</span><span class=w> </span><span class=s1>&#39;default&#39;</span><span class=w>
+</span><span class=w>
+</span><span class=w></span><span class=c>#devmodel</span><span class=w>
+</span><span class=w></span><span class=k>devmodel</span><span class=p>:</span><span class=w> </span><span class=s1>&#39;RPi4&#39;</span><span class=w>
+</span><span class=w>
+</span><span class=w></span><span class=c>#devmodel file overwrite</span><span class=w>
+</span><span class=w></span><span class=k>devmodelfile</span><span class=p>:</span><span class=w> </span><span class=s1>&#39;&#39;</span><span class=w>
+</span><span class=w>
+</span><span class=w></span><span class=c>#EVE arch (amd64/arm64)</span><span class=w>
+</span><span class=w></span><span class=k>arch</span><span class=p>:</span><span class=w> </span><span class=s1>&#39;arm64&#39;</span><span class=w>
+</span><span class=w>
+</span><span class=w></span><span class=c>#EVE os (linux/darwin)</span><span class=w>
+</span><span class=w></span><span class=k>os</span><span class=p>:</span><span class=w> </span><span class=s1>&#39;linux&#39;</span><span class=w>
+</span><span class=w>
+</span><span class=w></span><span class=c>#EVE acceleration (set to false if you have problems with qemu)</span><span class=w>
+</span><span class=w></span><span class=k>accel</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span><span class=w>
+</span><span class=w></span><span class=c>#variant of hypervisor of EVE (kvm/xen)</span><span class=w>
+</span><span class=w></span><span class=k>hv</span><span class=p>:</span><span class=w> </span><span class=s1>&#39;kvm&#39;</span><span class=w>
+</span><span class=w>
+</span><span class=w></span><span class=c>#serial number in SMBIOS</span><span class=w>
+</span><span class=w></span><span class=k>serial</span><span class=p>:</span><span class=w> </span><span class=s1>&#39;*&#39;</span><span class=w>
+</span><span class=w>
+</span><span class=w></span><span class=c>#onboarding certificate of EVE to put into adam</span><span class=w>
+</span><span class=w></span><span class=k>cert</span><span class=p>:</span><span class=w> </span><span class=s1>&#39;default-certs/onboard.cert.pem&#39;</span><span class=w>
+</span><span class=w>
+</span><span class=w></span><span class=c>#device certificate of EVE to put into adam</span><span class=w>
+</span><span class=w></span><span class=k>device-cert</span><span class=p>:</span><span class=w> </span><span class=s1>&#39;default-certs/device.cert.pem&#39;</span><span class=w>
+</span><span class=w>
+</span><span class=w></span><span class=c>#EVE pid file</span><span class=w>
+</span><span class=w></span><span class=k>pid</span><span class=p>:</span><span class=w> </span><span class=s1>&#39;default-eve.pid&#39;</span><span class=w>
+</span><span class=w>
+</span><span class=w></span><span class=c>#EVE log file</span><span class=w>
+</span><span class=w></span><span class=k>log</span><span class=p>:</span><span class=w> </span><span class=s1>&#39;default-eve.log&#39;</span><span class=w>
+</span><span class=w>
+</span><span class=w></span><span class=c>#EVE firmware</span><span class=w>
+</span><span class=w></span><span class=k>firmware</span><span class=p>:</span><span class=w> </span><span class=p>[</span>default-images/eve/OVMF_CODE.fd<span class=w> </span>default-images/eve/OVMF_VARS.fd<span class=p>]</span><span class=w>
+</span><span class=w>
+</span><span class=w>
+</span><span class=w></span><span class=c># ... removed other configuration for brevity</span><span class=w>
+</span></code></pre></div><p><code>eden</code> has already added some relevant information in the configuration like which Certificates
+are needed to on-board a Raspberry Pi 4 and what architecture/OS is needed. The default certs
+are located in the <code>dist</code> directory in the root of <code>eden</code> repository on the Host machine</p></li><li><p>If you have clean up using <code>make clean</code>, it might be worth executing the following command to enable
+cross-compiling images (Host amd64 -> Target arm64):</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash> docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+</code></pre></div></li><li><p>Let&rsquo;s setup <code>eden</code> with the default configuration for the Raspberry Pi 4</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash>./eden setup --verbosity<span class=o>=</span>debug
+</code></pre></div><p>the verbosity to DEBUG level might be interesting to observe what eden is actually doing. Essentially
+it will use default configuration file to create an arm64 image</p><p>The Logs look similar to:</p><pre><code>configName:  default
+configFile:  /home/shantanoo/.eden/contexts/default.yml
+DEBU[0000] Will use config from /home/shantanoo/.eden/contexts/default.yml 
+DEBU[0000] Try to add config from /home/shantanoo/Development/github.com/lf-edge/eden/eden-config.yml 
+DEBU[0000] Will use config from /home/shantanoo/.eden/contexts/default.yml 
+DEBU[0000] Try to add config from /home/shantanoo/Development/github.com/lf-edge/eden/eden-config.yml 
+DEBU[0000] Will use config from /home/shantanoo/Development/github.com/lf-edge/eden/dist/default-config_saved.yml 
+DEBU[0000] Try to add config from /home/shantanoo/Development/github.com/lf-edge/eden/eden-config.yml 
+DEBU[0000] Will use config from /home/shantanoo/.eden/contexts/default.yml 
+DEBU[0000] Try to add config from /home/shantanoo/Development/github.com/lf-edge/eden/eden-config.yml 
+INFO[0000] Config file /home/shantanoo/.eden/contexts/default.yml is the same as 
+    /home/shantanoo/Development/github.com/lf-edge/eden/dist/default-config_saved.yml 
+INFO[0000] GenerateEveCerts done                        
+INFO[0000] Certs already exists in certs dir: /home/shantanoo/Development/github.com/lf-edge/eden/dist/default-certs 
+INFO[0000] GenerateEVEConfig done                       
+DEBU[0000] Try ImagePull with (lfedge/eve:0.0.0-master-36a9fae5-kvm-arm64) 
+DEBU[0000] Try to call 'docker run lfedge/eve:0.0.0-master-36a9fae5-kvm-arm64 -f raw live' 
+with volumes map[/in:/home/shantanoo/Development/github.com/lf-edge/eden/dist/default-certs 
+/out:/home/shantanoo/Development/github.com/lf-edge/eden/dist/default-images/eve] 
+
+--
+INFO[0011] download EVE done: lfedge/eve:0.0.0-master-36a9fae5-kvm-arm64 
+INFO[0011] Write file /home/shantanoo/Development/github.com/lf-edge/eden/dist/default-images/eve/live.img to sd (it is in raw format) 
+DEBU[0011] Will use config from /home/shantanoo/.eden/contexts/default.yml 
+DEBU[0011] Try to add config from /home/shantanoo/Development/github.com/lf-edge/eden/eden-config.yml 
+DEBU[0011] Will use config from /home/shantanoo/.eden/contexts/default.yml 
+DEBU[0011] Try to add config from /home/shantanoo/Development/github.com/lf-edge/eden/eden-config.yml 
+To activate EDEN settings run:
+* for BASH/ZSH -- `source ~/.eden/activate.sh`
+* for TCSH -- `source ~/.eden/activate.csh`
+To deactivate them -- eden_deactivate
+</code></pre></li><li><p>Source our Eden Settings</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash><span class=nb>source</span> ~/.eden/activate.sh
+</code></pre></div></li><li><p>We will find our EVE live image ready to loaded on an SD-Card in the following directory:</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash>ls -la dist/default-images/eve/
+live.img live.raw
+</code></pre></div><p>We will use the <code>live.img</code> file for our Raspberry Pi 4</p></li><li><p>Burn the <code>live.img</code> on the SD Card (Beware! not to overwrite on any other filesystem except and your SD Card)</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash>lsblk -p <span class=c1># should tell you where is you SD Card e.g. /dev/sdX or /dev/mmcblkY</span>
+</code></pre></div><p>If the SD Card has partitions, it is better to unmount them using</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash>umount /dev/sda1 <span class=o>&amp;&amp;</span> umount /dev/sda2
+</code></pre></div><p>Burn the live image on the complete SD Card using:</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash>sudo dd <span class=k>if</span><span class=o>=</span>dist/default-images/eve/live.img <span class=nv>of</span><span class=o>=</span>/dev/sda <span class=nv>bs</span><span class=o>=</span>4M <span class=nv>conv</span><span class=o>=</span>fsync
+</code></pre></div><p>Hurrah! You now have an SD Card with EVE on it ready to be inserted in our Raspberry Pi 4</p></li></ol><h3 id=on-boarding-our-raspberry-pi-4>On-Boarding our Raspberry Pi 4</h3><p>In general, every EVE device during initial boot requires a Controller in order to make itself available.</p><p>In our case, we will on-board our EVE device with the <code>eden</code> controller running on our Host machine</p><p>Let&rsquo;s initially, connect our Raspberry Pi 4 with an Ethernet RJ-45 Cable to our Network (WLAN Router)</p><p>Before we power up the Pi, let&rsquo;s start our <code>eden</code> controller</p><ol><li><p>Start <code>eden</code></p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash>./eden start
+</code></pre></div><p>The output should be:</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash>
+✔ Adam status: container with name eden_adam is running
+Adam is expected at https://192.168.0.102:3333
+For <span class=nb>local</span> Adam you can run <span class=s1>&#39;docker logs eden_adam&#39;</span> to see logs
+✔ Registry status: container with name eden_registry is running
+    Registry is expected at https://192.168.0.102:5000
+    For <span class=nb>local</span> registry you can run <span class=s1>&#39;docker logs eden_registry&#39;</span> to see logs
+✔ Redis status: container with name eden_redis is running
+    Redis is expected at 192.168.0.102:6379
+    For <span class=nb>local</span> Redis you can run <span class=s1>&#39;docker logs eden_redis&#39;</span> to see logs
+✔ EServer process status: container with name eden_eserver is running
+    EServer is expected at http://192.168.0.102:8888 from EVE
+    For <span class=nb>local</span> EServer you can run <span class=s1>&#39;docker logs eden_eserver&#39;</span> to see logs
+
+--- context: default ---
+EVE state: not onboarded
+
+? EVE status: undefined <span class=o>(</span>no onboarded EVE<span class=o>)</span>
+✘ EVE Request IP: error: GetDeviceCurrent error: no device found
+------
+</code></pre></div><p>This mentions that we currently haven&rsquo;t on-boarded our EVE device. Let&rsquo;s do that</p></li><li><p>Insert the SD Card into the Pi and power it up. If you connect the Pi to a monitor you get to see
+the bootup process logs and what actually happens on the device
+(Unfortunately I cannot reproduce those logs here.).</p><p>Let&rsquo;s tell <code>eden</code> to on-board our EVE device</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash> ./eden eve onboard
+</code></pre></div><p>The logs look similar to:</p><pre><code> INFO[0000] Adam waiting for EVE registration (0) of (20) 
+ INFO[0020] Device uuid: f187a598-eb68-44b4-94e1-522ea01e2c67 
+ {&quot;id&quot;:{&quot;uuid&quot;:&quot;f187a598-eb68-44b4-94e1-522ea01e2c67&quot;,&quot;version&quot;:&quot;4&quot;},&quot;networks&quot;:[{&quot;id&quot;:&quot;6822e35f-c1b8-43ca-b344-0bbc0ece8cf1&quot;,&quot;type&quot;:4,&quot;ip&quot;:{&quot;dhcp&quot;:4,&quot;dhcpRange&quot;:{}}},{&quot;id&quot;:&quot;6822e35f-c1b8-43ca-b344-0bbc0ece8cf3&quot;,&quot;type&quot;:4,&quot;ip&quot;:{&quot;dhcp&quot;:4,&quot;dhcpRange&quot;:{}},&quot;wireless&quot;:{&quot;type&quot;:1}}],&quot;reboot&quot;:{&quot;counter&quot;:1000},&quot;configItems&quot;:[{&quot;key&quot;:&quot;app.allow.vnc&quot;,&quot;value&quot;:&quot;true&quot;},{&quot;key&quot;:&quot;debug.default.loglevel&quot;,&quot;value&quot;:&quot;info&quot;},{&quot;key&quot;:&quot;debug.default.remote.loglevel&quot;,&quot;value&quot;:&quot;warning&quot;},{&quot;key&quot;:&quot;debug.enable.ssh&quot;,&quot;value&quot;:&quot;ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCq5NW8ZfEH+5M/fb0xYzNDxC46vbLMP79V1axzQUsYzLbOHsYdEkWjQed/7ks4gmQ62wOJZw/XEk7f8PQ74fMPkHL4BPaSzDWNBEfPbdcTXfJBtlIv3YGzQh5eBhuwIjtGL+z1EFeH2a3WrFBlnw1il4WZtPtKYm0qMnd3x2H3XtUh9FZU4KhyxZq/Zbb9qQkCPfMSuJ/7OKPDfpJ0Iif8954BwryZbGFeMrhONww9rJum0dB7FJpG9J/mVyS0JVVqcGo6NQMqTsO+/mHrn3o7TmhZRR8ezLYTDj54HtxiBtqsrI9/BeVcNQ7lRXdGXndF7d17uUFQSk3/KwXgL+rsKHfW5RX+igcvq8GszLU1MvxnRPynnyQZP7QD33EZL3S44YAfww+aj56vMw8nx2FjGumaJC4MqrMDAGbgfP0lMCuCBIDAOEJnf3Q7hwyqYi8KYi6d93FlfIKsY3MMIOrsBfHtH9Ae7zOCaxTWpppvCskwgm4lH0eeHwJvR2/c7xu08yGwI+2KRME5L6uHSLPryfhwydR/BRtk1DnZ5yfLh3V6iG5nuMJIc8tfinn8ls4tk4UGaT2CmcioZRHiOA3al/X+sXTjiFVAh+nxAi0KX5GlaXW/LBUdhUqlxb/3NlHmizr86IrT1zFoXB1ApzFSlQYYpnHhyKzNc+qa6Al4VQ==\n&quot;},{&quot;key&quot;:&quot;newlog.allow.fastupload&quot;,&quot;value&quot;:&quot;true&quot;},{&quot;key&quot;:&quot;timer.config.interval&quot;,&quot;value&quot;:&quot;5&quot;},{&quot;key&quot;:&quot;timer.metric.interval&quot;,&quot;value&quot;:&quot;10&quot;}],&quot;systemAdapterList&quot;:[{&quot;name&quot;:&quot;eth0&quot;,&quot;uplink&quot;:true,&quot;networkUUID&quot;:&quot;6822e35f-c1b8-43ca-b344-0bbc0ece8cf1&quot;},{&quot;name&quot;:&quot;wlan0&quot;,&quot;networkUUID&quot;:&quot;6822e35f-c1b8-43ca-b344-0bbc0ece8cf3&quot;}],&quot;deviceIoList&quot;:[{&quot;ptype&quot;:1,&quot;phylabel&quot;:&quot;eth0&quot;,&quot;phyaddrs&quot;:{&quot;Ifname&quot;:&quot;eth0&quot;},&quot;logicallabel&quot;:&quot;eth0&quot;,&quot;assigngrp&quot;:&quot;eth0&quot;,&quot;usage&quot;:2,&quot;usagePolicy&quot;:{&quot;freeUplink&quot;:true}},{&quot;ptype&quot;:5,&quot;phylabel&quot;:&quot;wlan0&quot;,&quot;phyaddrs&quot;:{&quot;Ifname&quot;:&quot;wlan0&quot;},&quot;logicallabel&quot;:&quot;wlan0&quot;,&quot;assigngrp&quot;:&quot;wlan0&quot;,&quot;usage&quot;:4,&quot;usagePolicy&quot;:{}}],&quot;productName&quot;:&quot;RPi4&quot;}
+ INFO[0021] Received unexpected StatusCode(Bad Request): repeat request (0) of (20) 
+ INFO[0026] Received unexpected StatusCode(Bad Request): repeat request (1) of (20) 
+ INFO[0031] onboarded                                    
+ INFO[0031] device UUID: f187a598-eb68-44b4-94e1-522ea01e2c67 
+</code></pre><p>Great, an EVE device with an UUID <code>f187a598-eb68-44b4-94e1-522ea01e2c67</code> has been on-boarded!</p></li><li><p>Check the status to obtain the IP address of our EVE device</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash>./eden status
+✔ Adam status: container with name eden_adam is running
+Adam is expected at https://192.168.0.102:3333
+For <span class=nb>local</span> Adam you can run <span class=s1>&#39;docker logs eden_adam&#39;</span> to see logs
+✔ Registry status: container with name eden_registry is running
+    Registry is expected at https://192.168.0.102:5000
+    For <span class=nb>local</span> registry you can run <span class=s1>&#39;docker logs eden_registry&#39;</span> to see logs
+✔ Redis status: container with name eden_redis is running
+    Redis is expected at 192.168.0.102:6379
+    For <span class=nb>local</span> Redis you can run <span class=s1>&#39;docker logs eden_redis&#39;</span> to see logs
+✔ EServer process status: container with name eden_eserver is running
+    EServer is expected at http://192.168.0.102:8888 from EVE
+    For <span class=nb>local</span> EServer you can run <span class=s1>&#39;docker logs eden_eserver&#39;</span> to see logs
+
+--- context: default ---
+EVE state: registered
+
+✔ EVE REMOTE IPs: 192.168.0.103<span class=p>;</span> fe80::de5e:a412:cd16:3beb
+    Last info received time: 2021-08-23 17:57:15 +0200 CEST
+✔ EVE memory: <span class=m>351</span> MB/3.5 GB
+✔ EVE Request IP: 192.168.0.103
+------
+</code></pre></div><p>There you go! our EVE device has the IP address <code>192.168.0.103</code>, if wish to use an IPv6 <code>fe80::de5e:a412:cd16:3beb</code></p></li></ol><h2 id=deploying-an-nginx-app>Deploying an <code>nginx</code> app</h2><p>We will follow the same path of deploying a simple <code>nginx</code> pod on the actual EVE Device using <code>eden</code> here</p><p>In the <code>data/</code> directory you will find a simple <code>nginx</code> configuration that will be deployed on the EVE device</p><ol><li><p>Deploy an <code>nginx</code> pod</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash>./eden pod deploy --name<span class=o>=</span>eve_rpi_nginx docker://nginx <span class=se>\
+</span><span class=se></span>    -p 8027:80 <span class=se>\
+</span><span class=se></span>    --mount<span class=o>=</span><span class=nv>src</span><span class=o>=</span>./data/helloeve,dst<span class=o>=</span>/usr/share/nginx/html
+</code></pre></div><p>This command tells <code>eden</code> to deploy an <code>nginx</code> pod as a docker container with the name <code>eve_rpi_nginx</code> and expose
+port <code>8027</code> on the device for access. <code>--mount</code> provides a volume mount configuration for our <code>nginx</code> pod</p><p>We have now deployed our <code>nginx</code> pod on our actual EVE device</p></li><li><p>We will have to give <code>eden</code> some time till the application pod is completely deployed and running. There are some really
+good safety checks happening under-the-hood that will make this application deployment safe! You can check the status using:</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash>./eden pod ps
+NAME		    IMAGE			        UUID					             INTERNAL	    EXTERNAL		    MEMORY	STATE<span class=o>(</span>ADAM<span class=o>)</span>	LAST_STATE<span class=o>(</span>EVE<span class=o>)</span>
+eve_pi_nginx	library/nginx:latest	75de13a4-764f-4b8a-93ac-875eb7390b6e	-:80		192.168.0.103:8027	<span class=m>0</span> B/0 B	IN_CONFIG	DOWNLOAD_STARTED <span class=o>(</span>39%<span class=o>)</span>
+</code></pre></div><p>Once the deployment is done the output of would look like:</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash>./eden pod ps
+NAME         IMAGE			        UUID					              INTERNAL	   EXTERNAL		    MEMORY		  STATE<span class=o>(</span>ADAM<span class=o>)</span>    LAST_STATE<span class=o>(</span>EVE<span class=o>)</span>
+eve_pi_nginx library/nginx:latest	75de13a4-764f-4b8a-93ac-875eb7390b6e	10.11.12.2:80	192.168.0.103:8027	1.2 GB/371 MB	IN_CONFIG	RUNNING
+</code></pre></div></li></ol><h3 id=testing-the-app>Testing the App</h3><p>Since we know the IP address of our EVE Device</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash>curl -XGET http://192.168.0.103:8027
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;Go back to eden page&lt;/title&gt;
+&lt;meta http-equiv<span class=o>=</span><span class=s2>&#34;REFRESH&#34;</span> <span class=nv>content</span><span class=o>=</span><span class=s2>&#34;0;url=https://github.com/lf-edge/eden&#34;</span>&gt;
+&lt;/head&gt;
+&lt;body&gt;
+Sample hello eve app
+&lt;/body&gt;
+&lt;/html&gt;%
+</code></pre></div><h3 id=accessing-our-eve-device>Accessing our EVE Device</h3><p>for troubleshooting or peeping inside our EVE device</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash>./eden eve ssh
+f187a598-eb68-44b4-94e1-522ea01e2c67:~# uname -a
+Linux f187a598-eb68-44b4-94e1-522ea01e2c67 5.10.7-default <span class=c1>#1 SMP Fri Jun 25 23:28:03 UTC 2021 aarch64 Linux</span>
+</code></pre></div><p>type <code>exit</code> to logout of the SSH Shell</p><h2 id=clean-up>Clean Up</h2><p>you can stop / delete the pod</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash>./eden pod stop eve_rpi_nginx
+</code></pre></div><p>OR</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash>./eden pod delete --with-volumes eve_rpi_nginx
+</code></pre></div></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>Updated on 24-08-2021</span></div><div class=post-info-license></div></div><div class=post-info-line><div class=post-info-md></div><div class=post-info-share><span><a href=javascript:void(0); title="Share on Twitter" data-sharer=twitter data-url=https://shantanoo-desai.github.io/posts/technology/eve-eden-rpi4-nginx/ data-title="Deploy an nginx app with LF-Edge's EVE on a Raspberry Pi 4 - Part 3" data-hashtags="Edge Computing,Open-Source,Edge Cluster Orchestration,IoT Deployment,IoT,Linux Foundation Projects"><i class="fab fa-twitter fa-fw"></i></a><a href=javascript:void(0); title="Share on Facebook" data-sharer=facebook data-url=https://shantanoo-desai.github.io/posts/technology/eve-eden-rpi4-nginx/ data-hashtag="Edge Computing"><i class="fab fa-facebook-square fa-fw"></i></a><a href=javascript:void(0); title="Share on Linkedin" data-sharer=linkedin data-url=https://shantanoo-desai.github.io/posts/technology/eve-eden-rpi4-nginx/><i class="fab fa-linkedin fa-fw"></i></a><a href=javascript:void(0); title="Share on WhatsApp" data-sharer=whatsapp data-url=https://shantanoo-desai.github.io/posts/technology/eve-eden-rpi4-nginx/ data-title="Deploy an nginx app with LF-Edge's EVE on a Raspberry Pi 4 - Part 3" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href=javascript:void(0); title="Share on Hacker News" data-sharer=hackernews data-url=https://shantanoo-desai.github.io/posts/technology/eve-eden-rpi4-nginx/ data-title="Deploy an nginx app with LF-Edge's EVE on a Raspberry Pi 4 - Part 3"><i class="fab fa-hacker-news fa-fw"></i></a><a href=javascript:void(0); title="Share on Reddit" data-sharer=reddit data-url=https://shantanoo-desai.github.io/posts/technology/eve-eden-rpi4-nginx/><i class="fab fa-reddit fa-fw"></i></a></span></div></div></div><div class=post-info-more><section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=/tags/edge-computing/>Edge Computing</a>,&nbsp;<a href=/tags/open-source/>Open-Source</a>,&nbsp;<a href=/tags/edge-cluster-orchestration/>Edge Cluster Orchestration</a>,&nbsp;<a href=/tags/iot-deployment/>IoT Deployment</a>,&nbsp;<a href=/tags/iot/>IoT</a>,&nbsp;<a href=/tags/linux-foundation-projects/>Linux Foundation Projects</a></section><section><span><a href=javascript:void(0); onclick=window.history.back();>Back</a></span>&nbsp;|&nbsp;<span><a href=/>Home</a></span></section></div><div class=post-nav><a href=/posts/technology/lf-edge-eden-qemu-telegraf-part-2/ class=prev rel=prev title="Observing Eve's CPU and Memory Consumption via Telegraf in QEMU - Part 2"><i class="fas fa-angle-left fa-fw"></i>Observing Eve's CPU and Memory Consumption via Telegraf in QEMU - Part 2</a></div></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line>Powered by <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.70.0">Hugo</a> | Theme - <a href=https://github.com/dillonzq/LoveIt target=_blank rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i>LoveIt</a></div><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2021</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank></a></span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top"><i class="fas fa-arrow-up fa-fw"></i></a><a href=# id=view-comments class=fixed-button title="View Comments"><i class="fas fa-comment fa-fw"></i></a></div><script type=text/javascript src=/lib/smooth-scroll/smooth-scroll.min.js></script><script type=text/javascript src=/lib/lazysizes/lazysizes.min.js></script><script type=text/javascript src=/lib/clipboard/clipboard.min.js></script><script type=text/javascript src=/lib/sharer/sharer.min.js></script><script type=text/javascript>window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":50},"comment":{}};</script><script type=text/javascript src=/js/theme.min.js></script></body></html>
