@@ -6,6 +6,7 @@ the solution is now trivial by simply using <code>uts: host</code> in a compose 
 </span><span class=w>  </span><span class=k>test</span><span class=p>:</span><span class=w>
 </span><span class=w>    </span><span class=k>image</span><span class=p>:</span><span class=w> </span>alpine<span class=p>:</span>latest<span class=w>
 </span><span class=w>    </span><span class=k>container_name</span><span class=p>:</span><span class=w> </span>hostname-tester<span class=w>
+</span><span class=w>    </span><span class=k>uts</span><span class=p>:</span><span class=w> </span>host<span class=w>
 </span><span class=w>    </span><span class=k>command</span><span class=p>:</span><span class=w>
 </span><span class=w>      </span>- hostname<span class=w>
 </span></code></pre></div><p>Or by using the Docker CLI:</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash>docker run --uts<span class=o>=</span>host alpine:latest hostname
